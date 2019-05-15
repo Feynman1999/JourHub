@@ -1,0 +1,11 @@
+
+mysite/*/__pycache__/
+
+mysite/*/migrations/
+
+*.pyc
+
+*.sqlite3
+
+\.vscode/
+
