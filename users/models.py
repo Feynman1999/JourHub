@@ -9,5 +9,6 @@ class UserProfile(models.Model):
           (u'F', u'Female'),
       )
     gender = models.CharField(null=True,max_length=2,choices=GENDER_CHOICE,default='')
+    age = models.IntegerField(default=0)
     def __str__(self):
         return '<Profile: %s for %s>' % (self.nickname,self.user.username)
