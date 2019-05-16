@@ -4,7 +4,10 @@ from django.http import JsonResponse,HttpResponse
 
 # 主页
 def index(request):
-    return render(request,'index.html')
+    from periodical import models
+    context = {}
+    context['periodicals'] = list(models.Periodical.objects.all())
+    return render(request,'index.html',context)
 
 # 其他
 def about(request):

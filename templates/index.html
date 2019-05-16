@@ -18,5 +18,16 @@
                 <a href="{% url 'register' %}"><input type="button" value="注册"></a>
             {% endif %}
         </div>
+        <div>
+            <!--搜索框-->           
+        </div>
+        <div>
+            期刊数量:{{ periodicals | length }}
+            {% for periodical in periodicals %}
+                <a href="periodical/{{ periodical.id }}">{{ periodical.Name }}</a>
+            {% empty %}
+                <h3>No periodical</h3>
+            {% endfor %}
+        </div>
     </body>
 </html>
