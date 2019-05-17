@@ -1,7 +1,7 @@
 
-mysite/*/__pycache__/
+*/__pycache__/
 
-mysite/*/migrations/
+*/migrations/
 
 *.pyc
 
