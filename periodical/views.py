@@ -11,18 +11,16 @@ def get_periodical(request,id):
     context['pappers']=pappers
     return render(request,'periodical.html',context)
 
+def search(request):
+    pass
+
 # 访问哪一个期刊
 def get_periodicals(request,name):
     periodicals = list(models.Periodical.objects.filter(Name = name))
     context={}
     context['result'] = periodicals
-    return render(request,'search.html',context)
+    return render(request,'periodicals.html',context)
 
-def get_papers(request,name):
-    pappers = list(models.Paper.objects.filter(Title = name))
-    context={}
-    context['result'] = pappers
-    return render(request,'search.html',context)
 
 # 访问具体文章
 def get_paper(request,id):
@@ -37,6 +35,9 @@ def add(request):
         pass
     pass
 
+def addlist(request):
+    pass
+
 # 借阅期刊
 def borrow(request,id,day):
     from django.contrib import auth
@@ -44,3 +45,6 @@ def borrow(request,id,day):
     user_id = res[0]['id']
     models.Borrow.objects.create(Person_id=user_id,Period_id=id,Borrow_Duration=day)
     return redirect('/periodical/%s' %(id,))
+
+def borrowlist(request):
+    pass
