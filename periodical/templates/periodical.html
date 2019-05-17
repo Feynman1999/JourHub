@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <meta charset="UTF-8"> 
+        <title>Periodrcal</title>
+    </head>
+    <body>
+        <div>
+            期刊名:{{ periodical.Name }}<br>
+            <a href="/periodical/borrow={{ periodical.id }}+30">借刊</a> <br>
+            {% for papper in pappers %}
+                <a href="/periodical/papper/{{ papper.id }}">{{ papper.Title }}</a>
+            {% empty %}
+                <h3>No Papper</h3>
+            {% endfor %}
+        </div>
+    </body>
+</html>
