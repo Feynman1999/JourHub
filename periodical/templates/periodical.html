@@ -7,10 +7,28 @@
         <div>
             期刊名:{{ periodical.Name }}<br>
             <a href="/periodical/borrow={{ periodical.id }}+30">借刊</a> <br>
-            {% for papper in pappers %}
-                <a href="/periodical/papper/{{ papper.id }}">{{ papper.Title }}</a>
+            年：{{ periodical.Year }}
+            卷: {{ periodical.Volume }}
+            期: {{ periodical.Phase }}
+            发布周期:{{ periodical.Cycle }}
+            邮政编码：{{ periodical.Postal }}
+            CN编号：{{ periodical.CN }}
+            ISSN: {{ periodical.ISSN }}
+            地址： {{ periodical.Locus }}
+            库存： {{ periodical.Reserve }}
+            总量： {{ periodical.Total }}
+            是否到货： {{ periodical.Status }}
+            征订日期： {{ periodical.Order_Time }}
+            库存为：{{ periodical.Reserve }} <br>
+            总数为：{{ periodical.Total }}<br>
+            包含论文为：<br>
+            {% for paper in papers %}
+                论文题目：<a href="/periodical/paper/{{ paper.id }}">{{ paper.Title }}</a>
+                作者：{{ paper.Auther }}
+                关键词：{{ paper.keyWords }}
+                页码： {{ paper.Pages_Start }} ~ {{ paper.Pages_End }}
             {% empty %}
-                <h3>No Papper</h3>
+                <h3>No paper</h3>
             {% endfor %}
         </div>
     </body>

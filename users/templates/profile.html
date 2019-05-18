@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <meta charset="UTF-8"> 
+        <title>{{ User.username }} 's ProFile</title>
+    </head>
+    <body>
+        <div>
+            username : {{ User.username }}<br>
+            nickname : {{ UserProfile.nickname }}<br>
+            e-mail   : {{ User.email }}<br>
+            age      : {{ UserProfile.age }}<br>
+            性别 :
+                {% if UserProfile.gender == male %}
+                    男
+                {% else %}
+                    女<br>
+                {% endif %}
+            <a href="/users/{{ User.id }}/change/">修改信息</a>
+        </div>
+    </body>
+</html>

@@ -55,8 +55,8 @@ def register(request):
         if request.POST.get('age'):
             age = request.POST.get('age')
         # 验证成功
-        if len(errors) == 0:
         # if username is not None and password is not None and password2 is not None and email is not None and CompareFlag :
+        if len(errors) == 0:
             user = auth.models.User.objects.create_user(username,email,password)
             user.save()
             userlogin = auth.authenticate(username = username,password = password)
@@ -79,12 +79,46 @@ def logout(request):
 
 # 查看用户信息
 def profile(request,id):
+    from users import models
+    # 获得当前的数据
     Query_User = auth.models.User.objects.filter(id=id)
-    
+    Query_UserProFile = models.UserProfile.objects.filter(user_id=id)
+    tmpUsr = list(Query_User)[0]
+    tmpUsrProfile = list(Query_UserProFile)[0]
     if Query_User.exists() == False:
-        return render(request,'error.html',{'Message':'can not find user'})
-    if Query_User.username == request.user:
-        return render(request,'profile.html',{})
-    else:
-        return render(request,'error.html',{'Message':'have not authority'})
-    
+        return render(request,'error.html',{'message':'can not find user'})
+    if tmpUsr.username != str(request.user):
+        return render(request,'error.html',{'message':'have not authority'})
+
+    return render(request,'profile.html',{'User':tmpUsr,'UserProfile':tmpUsrProfile})
+
+def change(request,id):
+    from users import models
+    if request.method == 'POST':
+        # 修改信息
+        nickname = request.POST.get('nickname')
+        email = request.POST.get('email')
+        age = request.POST.get('age')
+        gender = request.POST.get('gender')
+        User = auth.models.User.objects.get(id=id)
+        UserProFile = models.UserProfile.objects.get(user_id=id)
+        User.email = email
+        User.save()
+
+        UserProFile.nickname = nickname
+        UserProFile.age = age
+        UserProFile.gender = gender
+        UserProFile.save()
+
+        return redirect('/users/%d/'%(id,))
+    # 获得当前的数据
+    Query_User = auth.models.User.objects.filter(id=id)
+    Query_UserProFile = models.UserProfile.objects.filter(user_id=id)
+    tmpUsr = list(Query_User)[0]
+    tmpUsrProfile = list(Query_UserProFile)[0]
+    if Query_User.exists() == False:
+        return render(request,'error.html',{'message':'can not find user'})
+    if tmpUsr.username != str(request.user):
+        return render(request,'error.html',{'message':'have not authority'})
+
+    return render(request,'change.html',{'User':tmpUsr,'UserProfile':tmpUsrProfile})

@@ -47,9 +47,10 @@ class Paper(models.Model):
 class Borrow(models.Model):
     Person = models.ForeignKey(User,on_delete=models.DO_NOTHING)
     Period = models.ForeignKey(Periodical,on_delete=models.DO_NOTHING)
-    Borrow_Time = models.DateTimeField(auto_now_add=True)
+    Borrow_Time = models.DateTimeField(null=True)
     Borrow_Duration = models.IntegerField()
-    Return_Time = models.DateTimeField(auto_now=True)
+    Return_Time = models.DateTimeField(null=True)
+    Return = models.BooleanField(default=False)
     class Meta:
         verbose_name = '借阅信息'
         verbose_name_plural = verbose_name

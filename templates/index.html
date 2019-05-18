@@ -8,6 +8,31 @@
             {% if user.is_authenticated %}
                 已登录
                 <a href="{% url 'logout' %}"><input type="button" value="登出"></a>
+                <a href="{% url 'borrowlist' %}"><input type="button" value="借阅记录"></a>
+                <a href="/users/{{ user.id }}"><input type="button" value="个人信息"></a>
+                <div>
+                    <form action="{% url 'search' %}" method="POST">
+                        {% csrf_token %}
+                        <select name="type">
+                                <option value="periodical">期刊</option>
+                                <option value="paper">论文</option>
+                        </select>
+                        <input type="text" name="context">
+                        <input type="submit" value="搜索">
+                    </form>
+                </div>
+                <div>
+                    期刊数量:{{ periodicals | length }}<br>
+                    {% for periodical in periodicals %}
+                        <h4><a href="periodical/{{ periodical.id }}">{{ periodical.Name }}</a></h4>
+                        年：{{ periodical.Year }}
+                        卷: {{ periodical.Volume }}
+                        期: {{ periodical.Phase }}
+                        发布周期:{{ periodical.Cycle }}<br>
+                    {% empty %}
+                        <h3>No periodical</h3>
+                    {% endfor %}
+                </div>
             {% else %}
                 <form action="{% url 'login' %}" method="POST">
                     {% csrf_token %}
@@ -16,18 +41,8 @@
                     <input type="submit" value="登陆">
                 </form>
                 <a href="{% url 'register' %}"><input type="button" value="注册"></a>
+                
             {% endif %}
-        </div>
-        <div>
-            <!--搜索框-->           
-        </div>
-        <div>
-            期刊数量:{{ periodicals | length }}
-            {% for periodical in periodicals %}
-                <a href="periodical/{{ periodical.id }}">{{ periodical.Name }}</a>
-            {% empty %}
-                <h3>No periodical</h3>
-            {% endfor %}
         </div>
     </body>
 </html>

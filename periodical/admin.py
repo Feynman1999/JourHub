@@ -11,4 +11,4 @@ class PaperAdmin(admin.ModelAdmin):
 
 @admin.register(Borrow)
 class BorrowAdmin(admin.ModelAdmin):
-    list_display = ('id','Person_id','Period_id','Borrow_Duration')
+    list_display = ('id','Person_id','Period_id','Borrow_Time','Borrow_Duration','Return_Time','Return')
