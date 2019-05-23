@@ -6,15 +6,28 @@ from users import models
 def login(request):
     referer = request.META.get('HTTP_REFERER', reverse('index'))
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = auth.authenticate(request,username=username,password=password)
-        if user is not None:
+        errors = []
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        if username == "":
+            errors.append('请填写用户名')
+        if password == "":
+            errors.append('请填写密码')
+        if len(errors) == 0:
+            try:
+                tmpuser = auth.models.User.objects.get(username=username)
+            except models.User.DoesNotExist:
+                errors.append('用户名不存在')
+        if len(errors) == 0:
+            user = auth.authenticate(request,username=username,password=password)
+            if user is None:
+                errors.append('密码错误')
+        if len(errors) == 0:
             auth.login(request,user)
             return redirect(referer)
         else:
             #提示哪里错了
-            return render(request, 'users/login.html',{'message':'用户名或者密码错误'})
+            return render(request, 'users/login.html',{'message':errors,'PageFlag':True})
     else:
         return render(request, 'users/login.html',{'PageFlag':True})
 
@@ -59,18 +72,18 @@ def register(request):
             gender = request.POST.get('gender')
         if request.POST.get('age'):
             age = request.POST.get('age')
+        
         # 验证成功
-        # if username is not None and password is not None and password2 is not None and email is not None and CompareFlag :
         if len(errors) == 0:
             user = auth.models.User.objects.create_user(username,email,password)
             user.save()
             userlogin = auth.authenticate(username = username,password = password)
             auth.login(request,userlogin)
-            number = auth.models.User.objects.filter(username=username).values('id')
-            print(number[0]['id'])
-            models.UserProfile.objects.create(user_id=number[0]['id'],gender=gender,age=age)
+            number = auth.models.User.objects.get(username=username)
+            print(number.id)
+            models.UserProfile.objects.create(user_id=number.id,gender=gender,age=age)
             # 跳转首页
-            return redirect(referer)
+            return redirect('/')
         else:
             return render(request,'users/register.html', {'errors': errors,'PageFlag':True})
     return render(request,'users/register.html',{'PageFlag':True})
@@ -136,22 +149,29 @@ def password(request):
         oldpw = request.POST.get('oldpw')
         newpw = request.POST.get('newpw')
         newpw2 = request.POST.get('newpw2')
+        if oldpw == "":
+            errors.append('请填写旧密码')
+        if newpw == "":
+            errors.append('请填写新密码')
+        if newpw2 == "":
+            errors.append('请确认密码')
         referer = request.META.get('HTTP_REFERER', reverse('index'))
         tmpUser = auth.models.User.objects.get(id=request.user.id)
-        if check_password(oldpw, tmpUser.password):
-            if newpw != newpw2:
-                print(newpw,newpw2)
-                errors.append('两次密码输入不一致')
+        if len(errors) == 0:
+            if check_password(oldpw, tmpUser.password):
+                if newpw != newpw2:
+                    print(newpw,newpw2)
+                    errors.append('两次密码输入不一致')
+                else:
+                    tmpUser.password = make_password(newpw)
+                    tmpUser.save()
+                    print('change pw succ')
+                    userlogin = auth.authenticate(username = request.user.username,password = newpw)
+                    auth.login(request,userlogin)
             else:
-                tmpUser.password = make_password(newpw)
-                tmpUser.save()
-                print('change pw succ')
-                userlogin = auth.authenticate(username = request.user.username,password = newpw)
-                auth.login(request,userlogin)
-        else:
-            errors.append('旧密码不正确')
+                errors.append('旧密码不正确')
         if len(errors) == 0:
             return redirect('/')
         else:
-            return render(request,'users/password.html',{'message':errors})
+            return render(request,'users/password.html',{'message':errors,'PageFlag':True})
     return render(request,'users/password.html')

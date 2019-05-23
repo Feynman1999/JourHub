@@ -13,6 +13,7 @@
 {% block content %}
 <div>
     {{ message }}<br>
+    {% if user.is_staff %}
     <form action="{% url 'borrowlist' %}" method="POST">
         {% csrf_token %}
         <select name="type">
@@ -22,6 +23,7 @@
         <input type="text" name="context">
         <input type="submit" value="搜索">
     </form>
+    {% endif %}
     借阅信息<br>
     {% for it in result %}
         期刊名:<a href="/periodical/{{ it.period.id }}">{{ it.period.Name }}</a>
