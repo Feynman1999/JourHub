@@ -72,8 +72,8 @@ def register(request):
             gender = request.POST.get('gender')
         if request.POST.get('age'):
             age = request.POST.get('age')
+        
         # 验证成功
-        # if username is not None and password is not None and password2 is not None and email is not None and CompareFlag :
         if len(errors) == 0:
             user = auth.models.User.objects.create_user(username,email,password)
             user.save()
