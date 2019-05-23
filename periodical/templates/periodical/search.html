@@ -25,6 +25,29 @@
         </select>
         <input type="text" name="context" value="{{ context }}">
         <input type="submit" value="搜索">
+        <br>进行高级搜索
+        {% if not level %}
+            <input type="radio" name="level" value="True">是
+            <input type="radio" name="level" value="False" checked="checked">否
+            <br>
+            (对于期刊)<input type="number" name="Year">年
+            <input type="number" name="Volume">卷
+            <input type="number" name="Phase">期<br>
+            (对于论文)作者<input type="text" name="Auther">
+            开始页码<input type="number" name="Pages_Start">
+            结束页码<input type="number" name="Pages_End"><br>
+        {% else %}
+            <input type="radio" name="level" value="True" checked="checked">是
+            <input type="radio" name="level" value="False">否
+            <br>
+            (对于期刊)<input type="number" name="Year" value="{{ level.Year }}">年
+            <input type="number" name="Volume" value="{{ level.Volume }}">卷
+            <input type="number" name="Phase" value="{{ level.Phase }}">期<br>
+            (对于论文)作者<input type="text" name="Auther" value="{{ level.Auther }}">
+            开始页码<input type="number" name="Pages_Start" value="{{ level.Pages_Start }}">
+            结束页码<input type="number" name="Pages_End" value="{{ level.Pages_End }}"><br>
+        {% endif %}
+        
     </form>
 </div>
 <div>

@@ -27,13 +27,42 @@ def search(request):
         context = {}
         SearchType = request.POST.get('type')
         Context = request.POST.get('context')
-        if SearchType == 'periodical':
-            result = models.Periodical.objects.filter(Name__contains = Context).distinct().order_by('Name')
-        elif SearchType == 'paper':
-            # 也搜索关键字
-            res1 = models.Paper.objects.filter(Title__contains = Context)
-            res2 = models.Paper.objects.filter(KeyWords__contains = Context)
-            result = res1 | res2
+        Level = request.POST.get('level')
+        if Level == 'False':
+            if SearchType == 'periodical':
+                result = models.Periodical.objects.filter(Name__contains = Context).distinct().order_by('Name')
+            elif SearchType == 'paper':
+                # 也搜索关键字
+                res1 = models.Paper.objects.filter(Title__contains = Context)
+                res2 = models.Paper.objects.filter(KeyWords__contains = Context)
+                result = res1 | res2
+        # 进行高级搜索
+        else:
+            
+            # print(Level)
+            # print(type(Year),type(Volume),type(Phase))
+            # print(Year,Volume,Phase)
+            if SearchType == 'periodical':
+                Year = request.POST.get('Year')
+                Volume = request.POST.get('Volume')
+                Phase = request.POST.get('Phase')
+                result = models.Periodical.objects.filter(Name__contains = Context,
+                Year__contains=Year,Volume__contains=Volume,
+                Phase__contains=Phase).distinct().order_by('Name')
+                context['level'] = {'Year':Year,'Volume':Volume,'Phase':Phase}
+            elif SearchType == 'paper':
+                Auther = request.POST.get('Auther')
+                Pages_Start = request.POST.get('Pages_Start')
+                Pages_End = request.POST.get('Pages_End')
+                # 也搜索关键字
+                res1 = models.Paper.objects.filter(Title__contains = Context,
+                Auther__contains=Auther,Pages_Start__contains=Pages_Start,
+                Pages_End__contains=Pages_End)
+                res2 = models.Paper.objects.filter(KeyWords__contains = Context,
+                Auther__contains=Auther,Pages_Start__contains=Pages_Start,
+                Pages_End__contains=Pages_End)
+                result = res1 | res2
+                context['level'] = {'Auther':Auther,'Pages_Start':Pages_Start,'Pages_End':Pages_End}
         context['result'] = result
         context['type'] = SearchType
         context['context'] = Context
@@ -53,8 +82,10 @@ def get_periodicals(request,name):
 # 访问具体文章
 def get_paper(request,id):
     paper = models.Paper.objects.get(id = id)
+    periodical = models.Periodical.objects.get(id = paper.Belong_id)
     context={}
-    context['paper']=paper
+    context['paper'] = paper
+    context['periodical'] = periodical
     return render(request,'periodical/paper.html',context)
 
 # 征订新期刊
@@ -95,12 +126,17 @@ def add(request):
             errors.append('请填写所在地')
         if Total == "":
             errors.append('请填写订阅总数')
-        print(type(Name),Name)
         # 填写信息不出错
         if len(errors) == 0:
+            Number_Phase = 365 // int(Cycle)
             for it in range(int(Number)):
-                models.Periodical.objects.create(Name=Name,Year=Year,
-                Phase=str(int(Phase)+it),Cycle=Cycle,Postal=Postal,
+                # 跨年的时候的时间判断
+                now_Year = int(Year) + (int(Phase) + it) //Number_Phase
+                now_Phase = (int(Phase) + it) % Number_Phase
+                if now_Phase == 0:
+                    now_Phase = Number_Phase
+                models.Periodical.objects.create(Name=Name,Year=str(now_Year),
+                Phase=str(now_Phase),Cycle=Cycle,Postal=Postal,
                 CN=CN,ISSN=ISSN,Locus=Locus,Reserve=Total,Total=Total,
                 Status=False,Order_Time=timezone.now(),Responsibler_id=request.user.id)
             
