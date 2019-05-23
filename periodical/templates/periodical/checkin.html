@@ -12,15 +12,16 @@
 {% block content %}
 <div>
     <h2>{{ periodical.Name }}</h2><br>
-    年：{{ periodical.Year }}
-    卷: {{ periodical.Volume }}
-    期: {{ periodical.Phase }}
+    
     <br>
     {{ message }}
     <form action="{% url 'checkin' periodical.id %}" method="POST">
         {% csrf_token %}
         {% if message %}
             <p>请修正信息</p><br>
+            年：{{ periodical.Year }}
+            卷: <input type="text" name="Volume">
+            期: {{ periodical.Phase }}
             {% for it in values %}
                 <h4>第{{forloop.counter}}篇论文</h4><br>        
                 标题:<input type="text" name="Title_{{ forloop.counter }}" value="{{ it.Title }}">
@@ -31,6 +32,9 @@
                 <br>摘要:<p><input type="text" name="Abstract_{{ forloop.counter }}" value="{{ it.Abstract }}"></p>
             {% endfor %}
         {% else %}
+            年：{{ periodical.Year }}
+            卷: <input type="text" name="Volume">
+            期: {{ periodical.Phase }}
             {% for it in number %}
                 <h4>第{{it}}篇论文</h4><br>        
                 标题:<input type="text" name="Title_{{ it }}">

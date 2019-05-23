@@ -28,10 +28,12 @@ def search(request):
         SearchType = request.POST.get('type')
         Context = request.POST.get('context')
         if SearchType == 'periodical':
-            result = list(models.Periodical.objects.filter(Name__contains = Context).distinct().order_by('Name'))
+            result = models.Periodical.objects.filter(Name__contains = Context).distinct().order_by('Name')
         elif SearchType == 'paper':
-            result = list(models.Paper.objects.filter(Title__contains = Context))
-        print(result)
+            # 也搜索关键字
+            res1 = models.Paper.objects.filter(Title__contains = Context)
+            res2 = models.Paper.objects.filter(KeyWords__contains = Context)
+            result = res1 | res2
         context['result'] = result
         context['type'] = SearchType
         context['context'] = Context
@@ -39,8 +41,11 @@ def search(request):
 
 # 访问哪一个期刊
 def get_periodicals(request,name):
-    periodicals = list(models.Periodical.objects.filter(Name = name))
+    periodicals = models.Periodical.objects.filter(Name = name)
     context={}
+    periodList = list(periodicals)
+    if len(periodList) != 0:
+        context['basic'] = periodList[0]
     context['result'] = periodicals
     return render(request,'periodical/periodicals.html',context)
 
@@ -61,7 +66,6 @@ def add(request):
         errors = []
         Name = request.POST.get('Name')
         Year = request.POST.get('Year')
-        Volume = request.POST.get('Volume')
         Number = request.POST.get('Number')
         Phase = request.POST.get('Phase')
         Cycle = request.POST.get('Cycle')
@@ -75,8 +79,6 @@ def add(request):
             errors.append('请填写期刊名称')
         if Year == "":
             errors.append('请填写期刊年份')
-        if Volume == "":
-            errors.append('请填写期刊卷号')
         if Number == "":
             errors.append('请填写订阅期数')
         if Phase == "":
@@ -98,7 +100,7 @@ def add(request):
         if len(errors) == 0:
             for it in range(int(Number)):
                 models.Periodical.objects.create(Name=Name,Year=Year,
-                Volume=Volume,Phase=str(int(Phase)+it),Cycle=Cycle,Postal=Postal,
+                Phase=str(int(Phase)+it),Cycle=Cycle,Postal=Postal,
                 CN=CN,ISSN=ISSN,Locus=Locus,Reserve=Total,Total=Total,
                 Status=False,Order_Time=timezone.now(),Responsibler_id=request.user.id)
             
@@ -130,6 +132,9 @@ def checkin(request,id):
         errors = []
         papers = []
         tmpPeriod = models.Periodical.objects.get(id=id)
+        Volume = request.POST.get('Volume')
+        if Volume == "":
+            errors.append('请输入卷号')
         number = tmpPeriod.PaperNumber
         for i in range(number):
             paper = {}
@@ -164,6 +169,7 @@ def checkin(request,id):
         if len(errors) == 0:
             tmpPeriod = models.Periodical.objects.get(id=id)
             tmpPeriod.Status = True
+            tmpPeriod.Volume = Volume
             tmpPeriod.save()
             for it in papers:
                 models.Paper.objects.create(Title=it['Title'],Auther=it['Auther'],

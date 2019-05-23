@@ -9,24 +9,25 @@
     <link rel="stylesheet" href="{% static 'periodical/css/periodrcals.css' %}">
 {% endblock  %}
 
-
 {% block content %}
 <div>
-    期刊数量:{{ result | length }}
+    {% if basic %}
+        <h1>期刊名:{{ basic.Name }}</h1>
+        发布周期:{{ basic.Cycle }}
+        邮政编码：{{ basic.Postal }}
+        CN编号：{{ basic.CN }}
+        ISSN: {{ basic.ISSN }}
+        地址： {{ basic.Locus }}<br>
+    {% endif %}
+    期刊数量:{{ result | length }}<br>
     {% for it in result %}
         期刊名:<a href="/periodical/{{ it.id }}">{{ it.Name }}</a>
         年：{{ it.Year }}
         卷: {{ it.Volume }}
         期: {{ it.Phase }}
-        发布周期:{{ it.Cycle }}
-        邮政编码：{{ it.Postal }}
-        CN编号：{{ it.CN }}
-        ISSN: {{ it.ISSN }}
-        地址： {{ it.Locus }}
         库存： {{ it.Reserve }}
         总量： {{ it.Total }}
-        是否到货： {{ it.Status }}
-        征订日期： {{ it.Order_Time }}
+        征订日期： {{ it.Order_Time }}<br>
         
     {% empty %}
         <h3>No Result</h3>

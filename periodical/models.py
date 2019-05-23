@@ -6,7 +6,7 @@ class Periodical(models.Model):
     Name = models.CharField(max_length = 20)
     # 年,卷,期,周期
     Year = models.IntegerField()
-    Volume = models.IntegerField()
+    Volume = models.IntegerField(null=True)
     Phase = models.IntegerField()
     Cycle = models.IntegerField()
     # 邮发代号,CN刊号,ISSN

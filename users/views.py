@@ -16,7 +16,7 @@ def login(request):
             #提示哪里错了
             return render(request, 'users/login.html',{'message':'用户名或者密码错误'})
     else:
-        return render(request, 'users/login.html')
+        return render(request, 'users/login.html',{'PageFlag':True})
 
 # 注册
 def register(request):
@@ -72,8 +72,8 @@ def register(request):
             # 跳转首页
             return redirect(referer)
         else:
-            return render(request,'users/register.html', {'errors': errors})
-    return render(request,'users/register.html')
+            return render(request,'users/register.html', {'errors': errors,'PageFlag':True})
+    return render(request,'users/register.html',{'PageFlag':True})
 
 # 退出
 def logout(request):
