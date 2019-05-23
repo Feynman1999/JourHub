@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+
+{% block title %}
+    登录
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="{% static 'users/css/login.css' %}">
+{% endblock  %}
+
+{% block nav_login_active %}
+    active
+{% endblock %}
+
+{% block content %}
+
+    {% if not user.is_authenticated %}
+        <h3>{{ message }}</h3>
+        <form action="{% url 'login' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="username">
+            <input type="password" name="password">
+            <input type="submit" value="登陆">
+        </form>
+        <a href="{% url 'register' %}"><input type="button" value="注册"></a>
+    {% else %}
+        <h2 style="text-align:center;">您已登录，即将跳转至首页...</h2>
+        <script type="text/javascript">
+            var timeout = setTimeout(function () {
+                window.location.href = '/';
+            },1300)
+        </script>
+    {% endif %}
+
+{% endblock  %}
+
+
+
+
+
+

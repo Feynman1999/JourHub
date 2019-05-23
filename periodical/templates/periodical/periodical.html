@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+
+{% block title %}
+    Periodrcal
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="{% static 'periodical/css/periodrcal.css' %}">
+{% endblock  %}
+
+
+{% block content %}
+<div>
+    <h2>期刊名:{{ periodical.Name }}</h2>
+    <h4><a href="/periodical/borrow={{ periodical.id }}+30">借刊</a> </h4><br>
+    年：{{ periodical.Year }}
+    卷: {{ periodical.Volume }}
+    期: {{ periodical.Phase }}
+    发布周期:{{ periodical.Cycle }}
+    邮政编码：{{ periodical.Postal }}
+    CN编号：{{ periodical.CN }}
+    ISSN: {{ periodical.ISSN }}
+    地址： {{ periodical.Locus }}
+    库存： {{ periodical.Reserve }}
+    总量： {{ periodical.Total }}
+    征订日期： {{ periodical.Order_Time }}<br><br>
+    库存为：{{ periodical.Reserve }} 
+    总数为：{{ periodical.Total }}<br><br>
+    包含论文为：<br><br>
+    {% for paper in papers %}
+        论文题目：<a href="/periodical/paper/{{ paper.id }}">{{ paper.Title }}</a>
+        作者：{{ paper.Auther }}
+        关键词：{{ paper.KeyWords }}
+        页码： {{ paper.Pages_Start }} ~ {{ paper.Pages_End }}<br>
+        <p>{{ paper.Abstract }}</p><br>
+    {% empty %}
+        <h3>No paper</h3>
+    {% endfor %}
+</div>
+{% endblock  %}

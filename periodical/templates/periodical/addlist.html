@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+
+{% block title %}
+    征订列表
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="{% static 'periodical/css/addlist.css' %}">
+{% endblock  %}
+
+{% block content %}
+<div>
+    <a href="{% url 'add' %}">添加期刊</a>
+    <h3><p>未登记的期刊</p></h3><br>
+    {% for result in notcheck %}
+        期刊名:{{ result.Name }}
+        年：{{ result.Year }}
+        卷: {{ result.Volume }}
+        期: {{ result.Phase }}
+        征订日期： {{ result.Order_Time }}
+        征订人: {{ result.Responsibler.username }}
+        <a href="{% url 'checkin' result.id %}">登记</a>
+        <br>
+    {% empty %}
+        没有征订了但没有到货的期刊
+    {% endfor %}
+    <br>
+    <!--已经有的的期刊-->
+    <h3><p>登记的期刊</p></h3><br>
+    {% for result in checked %}
+        期刊名:<a href="/periodical/{{ result.id }}"> {{ result.Name }} </a>
+        年：{{ result.Year }}
+        卷: {{ result.Volume }}
+        期: {{ result.Phase }}    
+        库存： {{ result.Reserve }}
+        总量： {{ result.Total }}
+        征订日期： {{ result.Order_Time }}    
+        征订人: {{ result.Responsibler.username }}
+        <br>
+    {% empty %}
+        没有期刊
+    {% endfor %}
+</div>
+{% endblock  %}

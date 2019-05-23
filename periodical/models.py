@@ -17,10 +17,12 @@ class Periodical(models.Model):
     Locus = models.CharField(max_length = 20)
     Reserve = models.IntegerField()
     Total = models.IntegerField()
+    Borrow_Count = models.IntegerField(default=0)
     # 状态（是否订购）,征订人,征订日期
     Status = models.BooleanField()
     Responsibler = models.ForeignKey(User,on_delete=models.DO_NOTHING)
     Order_Time = models.DateTimeField(auto_now_add=True)
+    PaperNumber= models.IntegerField(null=True)
     class Meta:
         verbose_name = '期刊信息'
         verbose_name_plural = verbose_name

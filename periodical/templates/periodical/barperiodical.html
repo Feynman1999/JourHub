@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+
+{% block title %}
+    期刊列表
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="{% static 'periodical/css/add.css' %}">
+{% endblock  %}
+
+{% block content %}
+<div>
+    一共{{ periodicals|length }}种期刊<br>
+    {% for it in periodicals %}
+        期刊名:<a href="{% url 'periodical' it.Name %}">{{ it.Name }}</a><br>
+    {% empty %}
+        没有期刊
+    {% endfor %}
+    
+</div>
+{% endblock  %}
+

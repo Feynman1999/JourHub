@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+
+{% block title %}
+    Borrowlist
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="{% static 'periodical/css/borrowlist.css' %}">
+{% endblock  %}
+
+
+{% block content %}
+<div>
+    {{ message }}<br>
+    <form action="{% url 'borrowlist' %}" method="POST">
+        {% csrf_token %}
+        <select name="type">
+                <option value="periodical">期刊</option>
+                <option value="user">用户</option>
+        </select>
+        <input type="text" name="context">
+        <input type="submit" value="搜索">
+    </form>
+    借阅信息<br>
+    {% for it in result %}
+        期刊名:<a href="/periodical/{{ it.period.id }}">{{ it.period.Name }}</a>
+        用户名:<a href="/users/{{ it.user.id }}">{{ it.user.username }}</a>
+        借阅时间:<p>{{ it.borrow.Borrow_Time }}</p>
+        借阅天数:<p>{{ it.borrow.Borrow_Duration }}</p>
+        归还天数<p>{{ it.borrow.Return_Time }}</p>
+        {% if it.borrow.Return == False %}
+            <a href="/periodical/return/{{ it.borrow.id }}">还书</a>
+        {% else %}
+            已还
+        {% endif %}
+        <br>
+
+    {% endfor %}
+</div>
+{% endblock  %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+
+{% block title %}
+    搜索
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="{% static 'periodical/css/search.css' %}">
+{% endblock  %}
+
+
+{% block content %}
+<div>
+    <form action="{% url 'search' %}" method="POST">
+        {% csrf_token %}
+        <select name="type">    
+            {% if type == "paper" %}
+                <option value="periodical">期刊</option>
+                <option value="paper" selected="selected">论文</option>
+            {% else %}
+                <option value="periodical" selected="selected">期刊</option>
+                <option value="paper">论文</option>
+            {% endif %}
+        </select>
+        <input type="text" name="context" value="{{ context }}">
+        <input type="submit" value="搜索">
+    </form>
+</div>
+<div>
+    搜索结果<br>
+    {% if type == "periodical" %}
+        {% for it in result %}
+            <h4><a href="/periodical/periodical={{ it.Name }}/">{{ it.Name }}</a></h4>
+            年：{{ it.Year }}
+            卷: {{ it.Volume }}
+            期: {{ it.Phase }}
+            发布周期:{{ it.Cycle }}
+            邮政编码：{{ it.Postal }}
+            CN编号：{{ it.CN }}
+            ISSN: {{ it.ISSN }}
+            地址： {{ it.Locus }}
+            库存： {{ it.Reserve }}
+            <br>
+        {% endfor %}
+    {% else %}
+        {% for it in result %}
+            <h4><a href="/periodical/paper/{{ it.id }}/">{{ it.Title }}</a></h4>
+            作者：{{ it.Auther }}
+            关键词：{{ it.keyWords }}
+            页码： {{ it.Pages_Start }} ~ {{ it.Pages_End }}
+            摘要：{{ it.Abstract }}
+            <br>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock  %}

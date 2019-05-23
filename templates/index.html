@@ -1,48 +1,57 @@
-<html>
-    <head>
-        <meta charset="UTF-8"> 
-        <title>Index</title>
-    </head>
-    <body>
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+
+{% block title %}
+    JourHub's index
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}"> 
+{% endblock  %}
+
+{% block nav_index_active %}
+    active
+{% endblock %}
+
+{% block content %}
+<div>
         <div>
-            {% if user.is_authenticated %}
-                已登录
-                <a href="{% url 'logout' %}"><input type="button" value="登出"></a>
-                <a href="{% url 'borrowlist' %}"><input type="button" value="借阅记录"></a>
-                <a href="/users/{{ user.id }}"><input type="button" value="个人信息"></a>
-                <div>
-                    <form action="{% url 'search' %}" method="POST">
-                        {% csrf_token %}
-                        <select name="type">
-                                <option value="periodical">期刊</option>
-                                <option value="paper">论文</option>
-                        </select>
-                        <input type="text" name="context">
-                        <input type="submit" value="搜索">
-                    </form>
-                </div>
-                <div>
-                    期刊数量:{{ periodicals | length }}<br>
-                    {% for periodical in periodicals %}
-                        <h4><a href="periodical/{{ periodical.id }}">{{ periodical.Name }}</a></h4>
-                        年：{{ periodical.Year }}
-                        卷: {{ periodical.Volume }}
-                        期: {{ periodical.Phase }}
-                        发布周期:{{ periodical.Cycle }}<br>
-                    {% empty %}
-                        <h3>No periodical</h3>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <form action="{% url 'login' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="text" name="username">
-                    <input type="password" name="password">
-                    <input type="submit" value="登陆">
-                </form>
-                <a href="{% url 'register' %}"><input type="button" value="注册"></a>
-                
-            {% endif %}
+            <form action="{% url 'search' %}" method="POST">
+                {% csrf_token %}
+                <select name="type">
+                        <option value="periodical">期刊</option>
+                        <option value="paper">论文</option>
+                </select>
+                <input type="text" name="context">
+                <input type="submit" value="搜索">
+            </form>
         </div>
-    </body>
-</html>
+        <div>
+            <h1>热门期刊</h1><br>
+            {% for it in periodicals %}
+                <h4><a href="periodical/{{ it.id }}">{{ it.Name }}</a></h4>
+                年：{{ it.Year }}
+                卷: {{ it.Volume }}
+                期: {{ it.Phase }}
+                发布周期:{{ it.Cycle }}
+                借阅次数:{{ it.Borrow_Count }}<br>
+            {% empty %}
+                <h3>No periodical</h3>
+            {% endfor %}
+        </div>
+        <div>
+            <h1>最近借阅:</h1><br>
+            {% for it in borrow %}
+                期刊名:<h4><a href="periodical/{{ it.borrow.Period_id }}">{{ it.period.Name }}</a></h4>
+                年：{{ it.period.Year }}
+                卷: {{ it.period.Volume }}
+                期: {{ it.period.Phase }}
+                库存:{{ it.period.Reserve }}
+                借阅时间:{{ it.borrow.Borrow_Time }}<br>
+            {% empty %}
+                无借阅信息
+            {% endfor %}
+        </div>
+</div>
+
+{% endblock  %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+
+{% block title %}
+    征订列表
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="{% static 'periodical/css/checkin.css' %}">
+{% endblock  %}
+
+{% block content %}
+<div>
+    <h2>{{ periodical.Name }}</h2><br>
+    年：{{ periodical.Year }}
+    卷: {{ periodical.Volume }}
+    期: {{ periodical.Phase }}
+    <br>
+    {{ message }}
+    <form action="{% url 'checkin' periodical.id %}" method="POST">
+        {% csrf_token %}
+        {% if message %}
+            <p>请修正信息</p><br>
+            {% for it in values %}
+                <h4>第{{forloop.counter}}篇论文</h4><br>        
+                标题:<input type="text" name="Title_{{ forloop.counter }}" value="{{ it.Title }}">
+                作者:<input type="text" name="Auther_{{ forloop.counter }}" value="{{ it.Auther }}">
+                关键词:<input type="text" name="KeyWords_{{ forloop.counter }}" value="{{ it.KeyWords }}">
+                开始页码:<input type="number" name="Pages_Start_{{ forloop.counter }}" value="{{ it.Pages_Start }}">
+                结束页码:<input type="number" name="Pages_End_{{ forloop.counter }}" value="{{ it.Pages_End }}">
+                <br>摘要:<p><input type="text" name="Abstract_{{ forloop.counter }}" value="{{ it.Abstract }}"></p>
+            {% endfor %}
+        {% else %}
+            {% for it in number %}
+                <h4>第{{it}}篇论文</h4><br>        
+                标题:<input type="text" name="Title_{{ it }}">
+                作者:<input type="text" name="Auther_{{ it }}">
+                关键词:<input type="text" name="KeyWords_{{ it }}">
+                开始页码:<input type="number" name="Pages_Start_{{ it }}">
+                结束页码:<input type="number" name="Pages_End_{{ it }}">
+                <br>摘要:<p><input type="text" name="Abstract_{{ it }}"></p>
+                {% endfor %}
+        {% endif %}
+            
+        <input type="submit" value="录入"><br>
+    </form>
+</div>
+{% endblock  %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+
+{% block title %}
+    添加期刊
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="{% static 'periodical/css/add.css' %}">
+{% endblock  %}
+
+{% block content %}
+<div>
+    <h5>{{ message }}</h5>
+    <form action="{% url 'add' %}" method="POST">
+        {% csrf_token %}
+        期刊名字:<input type="text" name="Name"><br>
+        年:<input type="number" name="Year"><br>
+        卷:<input type="number" name="Volume"><br>
+        订阅期数:<input type="number" name="Number"><br>
+        开始期号:<input type="number" name="Phase"><br>
+        发行周期:<input type="number" name="Cycle"><br>
+        邮政编码:<input type="number" name="Postal"><br>
+        CN号:<input type="number" name="CN"><br>
+        ISSN号:<input type="number" name="ISSN"><br>
+        所在地:<input type="text" name="Locus"><br>
+        总数:<input type="number" name="Total"><br>
+        <input type="submit" value="添加"><br>
+    </form>
+    
+</div>
+{% endblock  %}
+

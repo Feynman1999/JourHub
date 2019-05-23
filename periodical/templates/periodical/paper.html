@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
+
+{% block title %}
+    paper
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="{% static 'periodical/css/paper.css' %}">
+{% endblock  %}
+
+
+{% block content %}
+<div>
+    论文题目：{{ paper.Title }}
+    作者：{{ paper.Auther }}
+    关键词：{{ paper.keyWords }}
+    页码： {{ paper.Pages_Start }} ~ {{ paper.Pages_End }}
+    摘要：{{ paper.Abstract }}
+</div>
+{% endblock  %}
