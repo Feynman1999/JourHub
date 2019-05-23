@@ -41,7 +41,7 @@ def search(request):
 
 # 访问哪一个期刊
 def get_periodicals(request,name):
-    periodicals = models.Periodical.objects.filter(Name = name)
+    periodicals = models.Periodical.objects.filter(Name = name,Status=True)
     context={}
     periodList = list(periodicals)
     if len(periodList) != 0:
