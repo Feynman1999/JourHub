@@ -14,27 +14,57 @@
 {% endblock %}
 
 {% block content %}
-<div>
+
     {% if user.is_authenticated %}
         已登录
         <a href="{% url 'logout' %}"><input type="button" value="登出"></a>
     {% else %}
-        <form action="{% url 'register' %}" method="POST">
-            {% csrf_token %}
-            username<input type="text" name="username"><br>
-            password<input type="password" name="password"><br>
-            password2<input type="password" name="password2"><br>
-            email<input type="email" name="email"><br>
-            female:<input type="radio" name="gender" value="female" checked="checked">
-            male:<input type="radio" name="gender" value="male"><br>
-            age<input type="text" name="age"><br>
-            <input type="submit" value="注册"><br>
-        </form>
-        {% for result in errors %}
-        <p>{{ result }} </p>
-        {% endfor %}
-    {% endif %}
-</div>
+    <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">注册<span class="text-danger pull-right">{{ errors.0 }}</span></h3>
+                    </div>
+                    <div class="panel-body">
+                        <form action="{% url 'register' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                              <label>Username</label>
+                              <input type="text" class="form-control" placeholder="输入您的用户名" name="username">
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control" placeholder="输入您的密码" name="password">
+                            </div>
+                            <div class="form-group">
+                                <label>Password Again</label>
+                                <input type="password" class="form-control" placeholder="再次输入密码" name="password2">
+                            </div>  
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Email address</label>
+                                <input type="email" class="form-control" placeholder="请输入邮箱" name="email">
+                            </div>
+                            <div class="form-inline">
+                                    <label>  Age&nbsp;&nbsp;</label>
+                                    <input type="text" class="form-control" placeholder="输入您的年龄" name="age">
+                            </div>
+                            <br>
+                            <div class="form-inline">
+                                <label>性别&nbsp;&nbsp;</label>
+                                <select name="gender" class="form-control">
+                                        <option value ="male">男</option>
+                                        <option value ="female">女</option>
+                                </select>   
+                            </div>                
+                            <button type="submit" class="btn btn-primary pull-right">注册</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+    </div>
+{% endif %}
 {% endblock  %}
 
 
