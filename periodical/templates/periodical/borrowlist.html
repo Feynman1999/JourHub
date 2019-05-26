@@ -23,11 +23,25 @@
                     <form action="{% url 'borrowlist' %}" method="POST">
                         {% csrf_token %}
                         <div class="form-inline">
-                                <select name="type" class="form-control">
-                                        <option value="periodical">期刊</option>
-                                        <option value="user">用户</option>
-                                </select>
+                            <select name="type" class="form-control">
+                            {% if TYPE %}
+                                {% if TYPE == 'periodical' %}
+                                    <option value="periodical" selected="selected">期刊</option>
+                                    <option value="user">用户</option>
+                                {% else %}
+                                    <option value="periodical">期刊</option>
+                                    <option value="user" selected="selected">用户</option>
+                                {% endif %}
+                            {% else %}
+                                <option value="periodical" selected="selected">期刊</option>
+                                <option value="user">用户</option>
+                            {% endif %}
+                        </select>
+                            {% if CONTEXT %}
+                                <input type="text" name="context" class="form-control" value="{{ CONTEXT }}">
+                            {% else %}
                                 <input type="text" name="context" class="form-control" placeholder="输入查询关键字">
+                            {% endif %}
                                 <button type="submit" class="btn btn-primary">搜索</button>
                         </div>
                     </form>
@@ -50,7 +64,7 @@
                                 <tr>
                                     <td>{{ it.id }}</td>
                                     <td><a href="/periodical/{{ it.period.id }}">{{ it.period.Name }}</a></td>
-                                    <td><a href="/users/{{ it.user.id }}">{{ it.user.username }}</a></td>
+                                    <td><a href="/users/profile/?id={{ it.user.id }}">{{ it.user.username }}</a></td>
                                     <td>{{ it.borrow.Borrow_Time }}</td>
                                     <td>{{ it.borrow.Borrow_Duration }}</td>
                                     <td>{{ it.borrow.Return_Time }}</td>
