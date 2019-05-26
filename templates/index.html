@@ -14,35 +14,33 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="row" id="row_search">
     <div class="col-md-2"></div>
     <div class="col-md-8">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title"><b>搜索</b><span class="text-danger pull-right"></span></h3>
-            </div>
-            <div class="panel-body">
-                <form action="{% url 'search' %}" method="POST">
-                        {% csrf_token %}
-                        <div class="form-inline">
-                            <select name="type" class="form-control" id="select1" onchange="select_change()">
-                                    <option value ="periodical">期刊</option>
-                                    <option value ="paper">论文</option>
-                            </select>&nbsp;&nbsp;
-                            <input style="width: 350px" type="text" class="form-control" placeholder="输入您要查询的关键字" name="context">&nbsp;&nbsp;&nbsp;  
-                            <button type="submit" class="btn btn-primary">搜索</button>&nbsp;&nbsp;&nbsp;
-                            <span class="text-info"><b>高级搜索</b></span>
-                            <input class="form-control" type="radio" name="level" value="True" id="ads_yes">是
-                            <input class="form-control" type="radio" name="level" value="False" checked="checked" id="ads_no">否
-                        </div><br>
-                        <div class="form-inline" id="ads">
-                        </div>
-                </form>
-            </div>
-        </div>
+        <br><br><br>
+        <h3><span class="text-danger pull-right"></span></h3>
+        <form action="{% url 'search' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-inline">
+                    <select name="type" class="form-control" id="select1" onchange="select_change()">
+                            <option value ="periodical">期刊</option>
+                            <option value ="paper">论文</option>
+                    </select>&nbsp;&nbsp;
+                    <input style="width: 350px" type="text" class="form-control" placeholder="输入您要查询的关键字" name="context">&nbsp;&nbsp;&nbsp;  
+                    <button type="submit" class="btn btn-primary">搜索</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-info">
+                        <span><b>高级搜索</b></span>
+                        <input type="radio" name="level" value="True" id="ads_yes">是
+                        <input type="radio" name="level" value="False" checked="checked" id="ads_no">否
+                    </button>
+                </div><br>
+                <div class="form-inline" id="ads">
+                </div>
+        </form>
+        <br><br><br>
     </div>
     <div class="col-md-2"></div>
-</div><br>
+</div>
 
 <div class="row">
     <div class="col-md-2"></div>
