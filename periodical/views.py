@@ -55,13 +55,31 @@ def search(request):
                 Pages_Start = request.POST.get('Pages_Start')
                 Pages_End = request.POST.get('Pages_End')
                 # 也搜索关键字
-                res1 = models.Paper.objects.filter(Title__contains = Context,
-                Auther__contains=Auther,Pages_Start__contains=Pages_Start,
-                Pages_End__contains=Pages_End)
-                res2 = models.Paper.objects.filter(KeyWords__contains = Context,
-                Auther__contains=Auther,Pages_Start__contains=Pages_Start,
-                Pages_End__contains=Pages_End)
+                # >=start
+                if Pages_Start == "" and Pages_End == "":
+                    res1 = models.Paper.objects.filter(Title__contains = Context,Auther__contains=Auther)
+                    res2 = models.Paper.objects.filter(KeyWords__contains = Context,Auther__contains=Auther)    
+                elif Pages_End == "":
+                    res1 = models.Paper.objects.filter(Title__contains = Context,
+                Auther__contains=Auther,Pages_Start__gte=Pages_Start)
+                    res2 = models.Paper.objects.filter(KeyWords__contains = Context,
+                Auther__contains=Auther,Pages_Start__gte=Pages_Start)    
+                # <=end
+                elif Pages_Start == "":
+                    res1 = models.Paper.objects.filter(Title__contains = Context,
+                Auther__contains=Auther,Pages_End__lte=Pages_End)
+                    res2 = models.Paper.objects.filter(KeyWords__contains = Context,
+                Auther__contains=Auther,Pages_End__lte=Pages_End)   
+                # >=start  <=end
+                else:
+                    res1 = models.Paper.objects.filter(Title__contains = Context,
+                Auther__contains=Auther,Pages_Start__gte=Pages_Start,
+                Pages_End__lte=Pages_End)
+                    res2 = models.Paper.objects.filter(KeyWords__contains = Context,
+                Auther__contains=Auther,Pages_Start__gte=Pages_Start,
+                Pages_End__lte=Pages_End)
                 result = res1 | res2
+                result.distinct()
                 context['level'] = {'Auther':Auther,'Pages_Start':Pages_Start,'Pages_End':Pages_End}
         context['result'] = result
         context['type'] = SearchType
@@ -256,14 +274,17 @@ def borrowlist(request):
         return redirect('/')
     res = auth.models.User.objects.get(username=request.user)
     is_staff = res.is_staff
+    context = {}
     # 管理员查看全部信息
     if is_staff == True:
-        message = "亲爱的管理员，欢迎来到本页面，您可以搜索全站的借阅信息"
+        message = "亲爱的管理员，欢迎来到本页面，您可以搜索所有用户的借阅信息"
         username = None
         # 查询某个人或者某个期刊的借阅情况
         if request.method == 'POST':
             SearchType = request.POST.get('type')
             Context = request.POST.get('context')
+            context['TYPE'] = SearchType
+            context['CONTEXT'] = Context
             from itertools import chain
             # 搜索某一用户
             if SearchType == 'user':
@@ -271,12 +292,16 @@ def borrowlist(request):
                 # users is queryset
                 tmpborrow = []
                 for it in users:
-                    tmpborrow.append(models.Borrow.objects.filter(Person_id=it.id).order_by('-id'))
-                borrow_all = tmpborrow[0]
-                for i in range(len(tmpborrow)):
-                    if i == 0:
-                        continue
-                    borrow_all = borrow_all | tmpborrow[i]
+                    tmpborrow.append(models.Borrow.objects.filter
+                    (Person_id=it.id).order_by('-id'))
+                if len(tmpborrow) == 0:
+                    borrow_all = models.Borrow.objects.none()
+                else:
+                    borrow_all = tmpborrow[0]
+                    for i in range(len(tmpborrow)):
+                        if i == 0:
+                            continue
+                        borrow_all = borrow_all | tmpborrow[i]
                 
             # 搜索某一期刊
             else:
@@ -284,11 +309,15 @@ def borrowlist(request):
                 tmpborrow = []
                 for it in periodicals:
                     tmpborrow.append(models.Borrow.objects.filter(Period_id=it.id).order_by('-id'))
-                borrow_all = tmpborrow[0]
-                for i in range(len(tmpborrow)):
-                    if i == 0:
-                        continue
-                    borrow_all = borrow_all | tmpborrow[i]
+                if len(tmpborrow) == 0:
+                    borrow_all = models.Borrow.objects.none()
+                    
+                else:
+                    borrow_all = tmpborrow[0]
+                    for i in range(len(tmpborrow)):
+                        if i == 0:
+                            continue
+                        borrow_all = borrow_all | tmpborrow[i]
             
         else:
             borrow_all = models.Borrow.objects.all().order_by('-id')
@@ -311,7 +340,7 @@ def borrowlist(request):
         tmpDict['id'] = it.id
         result.append(tmpDict)
 
-    context = {}
+    
     context['message'] = message
     context['result'] = result
     return render(request,'periodical/borrowlist.html',context)
@@ -323,7 +352,7 @@ def returnPeriod(request,id):
     if who.id != borrow.Person_id:
         return render(request,'error.html',{'message':'不能还不是自己借阅的期刊'})
 
-    # bug 时间不能update
+    
     borrow.Return_Time = timezone.now()
     borrow.Return = True
     borrow.save()
@@ -331,6 +360,6 @@ def returnPeriod(request,id):
     # 库存数量加一
     Period_id = borrow.Period_id
     tmpPeriod = models.Periodical.objects.get(id=Period_id)
-    tmpPeriod.Reserve = tmpPeriod.Reserve
+    tmpPeriod.Reserve += 1
     tmpPeriod.save()
     return redirect('/periodical/borrowlist')

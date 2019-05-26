@@ -98,49 +98,67 @@ def logout(request):
 # 查看用户信息
 def profile(request):
     # 获得当前的数据
-    now_id = request.user.id
-    Query_User = auth.models.User.objects.filter(id=now_id)
-    Query_UserProFile = models.UserProfile.objects.filter(user_id=now_id)
-    if Query_User.exists() == False:
-        return render(request,'users/error.html',{'message':'can not find user'})
-    tmpUsr = list(Query_User)[0]
-    tmpUsrProfile = list(Query_UserProFile)[0]
-    print(tmpUsrProfile.gender)
-    return render(request,'users/profile.html',{'User':tmpUsr,'UserProfile':tmpUsrProfile})
+    if request.method == 'GET' and request.user.is_staff:
+        now_id = request.GET.get('id')
+        # if now_id != request.user.id:
+        #     return redirect('/users/profile/?id=%d'%(request.user.id))
+    else:
+        now_id = request.user.id
+    
+    try:
+        Query_User = auth.models.User.objects.get(id=now_id)
+    except models.User.DoesNotExist:
+        return render(request,'error.html',{'message':'can not find user'})
+    try:
+        Query_UserProFile = models.UserProfile.objects.get(user_id=now_id)
+    except models.UserProfile.DoesNotExist:
+        return render(request,'users/profile.html',{'User':Query_User})
+    return render(request,'users/profile.html',{'User':Query_User,'UserProfile':Query_UserProFile})
 
 # 修改个人信息
 def change(request):
     now_id = request.user.id
     if request.method == 'POST':
         # 修改信息
+        errors = []
         nickname = request.POST.get('nickname')
         email = request.POST.get('email')
         age = request.POST.get('age')
         gender = request.POST.get('gender')
+        if nickname == "":
+            errors.append("请填写昵称")
+        if email == "":
+            errors.append("请填写邮箱")
+        if age == "":
+            errors.append("请填写年龄")
+        if gender == "":
+            errors.append("请填写性别")
+        if len(errors) != 0:
+            return render(request,'users/change.html',{'User':auth.models.User.objects.get(id=now_id),'message':errors})
         User = auth.models.User.objects.get(id=now_id)
-        UserProFile = models.UserProfile.objects.get(user_id=now_id)
         User.email = email
         User.save()
-
-        UserProFile.nickname = nickname
-        UserProFile.age = age
-        UserProFile.gender = gender
-        UserProFile.save()
-
-        referer = request.META.get('HTTP_REFERER', reverse('profile'))
+        try:
+            UserProFile = models.UserProfile.objects.get(user_id=now_id)
+            UserProFile.nickname = nickname
+            UserProFile.age = age
+            UserProFile.gender = gender
+            UserProFile.save()
+        except models.UserProfile.DoesNotExist:
+            UserProFile = models.UserProfile.objects.create(user_id=now_id,nickname=nickname,age=age,gender=gender)
+        # referer = request.META.get('HTTP_REFERER', reverse('profile'))
         return redirect('/users/profile/')
     # 获得当前的数据
-    Query_User = auth.models.User.objects.filter(id=now_id)
-    Query_UserProFile = models.UserProfile.objects.filter(user_id=now_id)
-    if Query_User.exists() == False:
-        return render(request,'users/error.html',{'message':'can not find user'})
-
-    tmpUsr = list(Query_User)[0]
-    tmpUsrProfile = list(Query_UserProFile)[0]
-    if tmpUsr.username != str(request.user):
-        return render(request,'users/error.html',{'message':'have not authority'})
-
-    return render(request,'users/change.html',{'User':tmpUsr,'UserProfile':tmpUsrProfile})
+    try:
+        Query_User = auth.models.User.objects.get(id=now_id)
+    except models.User.DoesNotExist:
+        return render(request,'error.html',{'message':'can not find user'})
+    try:
+        Query_UserProFile = models.UserProfile.objects.get(user_id=now_id)
+    except models.UserProfile.DoesNotExist:
+        return render(request,'users/change.html',{'User':Query_User})
+    return render(request,'users/change.html',{'User':Query_User,'UserProfile':Query_UserProFile})
+    
 
 # 修改密码
 def password(request):
