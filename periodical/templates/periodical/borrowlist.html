@@ -9,35 +9,66 @@
     <link rel="stylesheet" href="{% static 'periodical/css/borrowlist.css' %}">
 {% endblock  %}
 
+{% block nav_borrowlist_active %}
+    active
+{% endblock %}
 
 {% block content %}
-<div>
-    {{ message }}<br>
-    {% if user.is_staff %}
-    <form action="{% url 'borrowlist' %}" method="POST">
-        {% csrf_token %}
-        <select name="type">
-                <option value="periodical">期刊</option>
-                <option value="user">用户</option>
-        </select>
-        <input type="text" name="context">
-        <input type="submit" value="搜索">
-    </form>
-    {% endif %}
-    借阅信息<br>
-    {% for it in result %}
-        期刊名:<a href="/periodical/{{ it.period.id }}">{{ it.period.Name }}</a>
-        用户名:<a href="/users/{{ it.user.id }}">{{ it.user.username }}</a>
-        借阅时间:<p>{{ it.borrow.Borrow_Time }}</p>
-        借阅天数:<p>{{ it.borrow.Borrow_Duration }}</p>
-        归还天数<p>{{ it.borrow.Return_Time }}</p>
-        {% if it.borrow.Return == False %}
-            <a href="/periodical/return/{{ it.borrow.id }}">还书</a>
-        {% else %}
-            已还
-        {% endif %}
-        <br>
-
-    {% endfor %}
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+            <div class="row" style="text-align: center"><h4>{{ message }}</h4></div><br>
+            <div class="row" style="text-align: center">
+                {% if user.is_staff %}
+                    <form action="{% url 'borrowlist' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-inline">
+                                <select name="type" class="form-control">
+                                        <option value="periodical">期刊</option>
+                                        <option value="user">用户</option>
+                                </select>
+                                <input type="text" name="context" class="form-control" placeholder="输入查询关键字">
+                                <button type="submit" class="btn btn-primary">搜索</button>
+                        </div>
+                    </form>
+                {% endif %}
+            </div><br>
+            <div class="row">
+                <h3><b>借阅信息</b></h3>
+                    {% ifnotequal result|length 0 %}
+                        <table class="table table-striped table-hover">
+                            <tr class="success">
+                                <th>#</th>
+                                <th>借阅期刊名</th>
+                                <th>借阅用户</th>
+                                <th>借阅时间</th>
+                                <th>借阅天数</th>
+                                <th>归还时间</th>
+                                <th>是否归还</th>
+                            </tr>
+                            {% for it in result %}
+                                <tr>
+                                    <td>{{ it.id }}</td>
+                                    <td><a href="/periodical/{{ it.period.id }}">{{ it.period.Name }}</a></td>
+                                    <td><a href="/users/{{ it.user.id }}">{{ it.user.username }}</a></td>
+                                    <td>{{ it.borrow.Borrow_Time }}</td>
+                                    <td>{{ it.borrow.Borrow_Duration }}</td>
+                                    <td>{{ it.borrow.Return_Time }}</td>
+                                    <td>                        
+                                        {% if it.borrow.Return == False %}
+                                            否，<a href="/periodical/return/{{ it.borrow.id }}">点此还书</a>
+                                        {% else %}
+                                            已还书
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {%else%}
+                    <div style="text-align: center"><h4>暂无借阅记录</h4></div>
+                    {% endifnotequal %}
+            </div>
+    </div>
+    <div class="col-md-2"></div>
 </div>
 {% endblock  %}

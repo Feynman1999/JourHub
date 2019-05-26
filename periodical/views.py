@@ -258,7 +258,7 @@ def borrowlist(request):
     is_staff = res.is_staff
     # 管理员查看全部信息
     if is_staff == True:
-        message = "Dear staff,welcome to this page"
+        message = "亲爱的管理员，欢迎来到本页面，您可以搜索全站的借阅信息"
         username = None
         # 查询某个人或者某个期刊的借阅情况
         if request.method == 'POST':
@@ -296,7 +296,7 @@ def borrowlist(request):
         
     # 用户只能查看自己的
     else:
-        message = "Dear user , welcome to this page"
+        message = "亲爱的用户，欢迎来到本页面"
         user_id = res.id
         borrow_all = models.Borrow.objects.filter(Person_id=user_id).order_by('-id')
     
@@ -308,6 +308,7 @@ def borrowlist(request):
         tmpDict['user'] = auth.models.User.objects.get(id=it.Person_id)
         tmpDict['period'] = models.Periodical.objects.get(id=it.Period_id)
         tmpDict['borrow'] = it
+        tmpDict['id'] = it.id
         result.append(tmpDict)
 
     context = {}
