@@ -6,18 +6,38 @@
 {% endblock %}
 
 {% block header_extend %}
-    <link rel="stylesheet" href="{% static 'periodical/css/add.css' %}">
+    <link rel="stylesheet" href="{% static 'periodical/css/barperiodical.css' %}">
 {% endblock  %}
+
+{% block nav_periodical_active %}
+    active
+{% endblock %}
 
 {% block content %}
-<div>
-    一共{{ periodicals|length }}种期刊<br>
-    {% for it in periodicals %}
-        期刊名:<a href="{% url 'periodical' it.Name %}">{{ it.Name }}</a><br>
-    {% empty %}
-        没有期刊
-    {% endfor %}
-    
+
+
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <div class="row">
+            {% for it in periodicals %}
+                <div class="col-xs-2">
+                    <a href="{% url 'periodical' it.Name %}" class="thumbnail">
+                        <img src="{% static it.Name|add:'.png' %}" class="img-responsive" onerror="javascript:this.src='{% static 'logo2.png' %}' ">
+                    </a>
+                    <div style="text-align: center"><a href="{% url 'periodical' it.Name %}"><b>{{ it.Name }}</b></a></div>
+                </div>
+            {% endfor %}
+        </div>
+        <h3 style="text-align:center">一共{{ periodicals|length }}种期刊</h3>
+    </div>
+    <div class="col-md-1"></div>
 </div>
+
+
 {% endblock  %}
 
+
+{% block script %}
+<script src="{% static 'js/barperiodical.js' %}"></script>
+{% endblock  %}

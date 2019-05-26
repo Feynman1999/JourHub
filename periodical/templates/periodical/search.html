@@ -2,7 +2,7 @@
 {% load staticfiles %}   <!-- 虽然extends了 但还是要加上 -->
 
 {% block title %}
-    搜索
+    搜索结果
 {% endblock %}
 
 {% block header_extend %}
@@ -11,45 +11,59 @@
 
 
 {% block content %}
-<div>
-    <form action="{% url 'search' %}" method="POST">
-        {% csrf_token %}
-        <select name="type">    
-            {% if type == "paper" %}
-                <option value="periodical">期刊</option>
-                <option value="paper" selected="selected">论文</option>
-            {% else %}
-                <option value="periodical" selected="selected">期刊</option>
-                <option value="paper">论文</option>
-            {% endif %}
-        </select>
-        <input type="text" name="context" value="{{ context }}">
-        <input type="submit" value="搜索">
-        <br>进行高级搜索
-        {% if not level %}
-            <input type="radio" name="level" value="True">是
-            <input type="radio" name="level" value="False" checked="checked">否
-            <br>
-            (对于期刊)<input type="number" name="Year">年
-            <input type="number" name="Volume">卷
-            <input type="number" name="Phase">期<br>
-            (对于论文)作者<input type="text" name="Auther">
-            开始页码<input type="number" name="Pages_Start">
-            结束页码<input type="number" name="Pages_End"><br>
-        {% else %}
-            <input type="radio" name="level" value="True" checked="checked">是
-            <input type="radio" name="level" value="False">否
-            <br>
-            (对于期刊)<input type="number" name="Year" value="{{ level.Year }}">年
-            <input type="number" name="Volume" value="{{ level.Volume }}">卷
-            <input type="number" name="Phase" value="{{ level.Phase }}">期<br>
-            (对于论文)作者<input type="text" name="Auther" value="{{ level.Auther }}">
-            开始页码<input type="number" name="Pages_Start" value="{{ level.Pages_Start }}">
-            结束页码<input type="number" name="Pages_End" value="{{ level.Pages_End }}"><br>
-        {% endif %}
-        
-    </form>
-</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b>搜索</b><span class="text-danger pull-right"></span></h3>
+            </div>
+            <div class="panel-body">
+                <form action="{% url 'search' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-inline">
+                            <select name="type" class="form-control" id="select1" onchange="select_change()">
+                                {% if type == "paper" %}
+                                    <option value="periodical">期刊</option>
+                                    <option value="paper" selected="selected">论文</option>
+                                {% else %}
+                                    <option value="periodical" selected="selected">期刊</option>
+                                    <option value="paper">论文</option>
+                                {% endif %}
+                            </select>&nbsp;&nbsp;
+                            <input style="width: 350px" type="text" class="form-control" placeholder="输入您要查询的关键字" value="{{ context }}" name="context">&nbsp;&nbsp;&nbsp;  
+                            <button type="submit" class="btn btn-primary">搜索</button>&nbsp;&nbsp;&nbsp;
+                            <span class="text-info"><b>高级搜索</b></span>
+                            <input class="form-control" type="radio" name="level" value="True" {% if level %}checked="checked"{% endif %} id="ads_yes">是
+                            <input class="form-control" type="radio" name="level" value="False" {% if not level %}checked="checked"{% endif %} id="ads_no">否
+                        </div><br>
+                        <div class="form-inline" id="ads">
+                            {% if level %}
+                                {%if level.Year %}
+                                    <label>年</label>
+                                    <input style="width: 100px" type="number" value="{{ level.Year }}" name="Year" class="form-control">&nbsp;
+                                    <label>卷</label>
+                                    <input style="width: 100px" type="number" value="{{ level.Volume }}" name="Volume" class="form-control">&nbsp;
+                                    <label>期</label>
+                                    <input style="width: 100px" type="number" value="{{ level.Phase }}" name="Phase" class="form-control">&nbsp;&nbsp;&nbsp;
+                                {% else %}
+                                    <label>作者</label>
+                                    <input style="width: 150px" value="{{ level.Auther }}" type="text" name="Auther" class="form-control">&nbsp;
+                                    <label>开始页码</label>
+                                    <input style="width: 100px" value="{{ level.Pages_Start }}" type="number" name="Pages_Start" class="form-control">&nbsp;
+                                    <label>结束页码</label>
+                                    <input style="width: 100px" value="{{ level.Pages_End }}" type="number" name="Pages_End" class="form-control">&nbsp;
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div><br>
+
+
 <div>
     搜索结果<br>
     {% if type == "periodical" %}
@@ -77,4 +91,10 @@
         {% endfor %}
     {% endif %}
 </div>
+{% endblock  %}
+
+{% block script %}
+
+<script type="text/javascript" src="{% static 'js/search.js' %}"></script>
+
 {% endblock  %}

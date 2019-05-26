@@ -70,6 +70,7 @@ def register(request):
                 errors.append('两次输入密码不一致')
         if request.POST.get('gender'):
             gender = request.POST.get('gender')
+            # print(gender)
         if request.POST.get('age'):
             age = request.POST.get('age')
         
@@ -104,7 +105,7 @@ def profile(request):
         return render(request,'users/error.html',{'message':'can not find user'})
     tmpUsr = list(Query_User)[0]
     tmpUsrProfile = list(Query_UserProFile)[0]
-
+    print(tmpUsrProfile.gender)
     return render(request,'users/profile.html',{'User':tmpUsr,'UserProfile':tmpUsrProfile})
 
 # 修改个人信息

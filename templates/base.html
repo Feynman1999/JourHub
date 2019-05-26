@@ -34,7 +34,7 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li class= "nav-item {% block nav_index_active %}{% endblock %}"><a href="{% url 'index' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<b>主页</b><span class="sr-only">(current)</span></a></li>
-          <li class= "nav-item {% block nav_blog_active %}{% endblock %}"><a href="{% url 'barperiodical' %}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;<b>期刊</b></a></li>
+          <li class= "nav-item {% block nav_periodical_active %}{% endblock %}"><a href="{% url 'barperiodical' %}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;<b>期刊</b></a></li>
           <li class= "nav-item {% block nav_borrowlist_active %}{% endblock %}"><a href="{% url 'borrowlist' %}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;<b>借阅记录</b></a></li>
           <li class= "nav-item {% block nav_about_active %}{% endblock %}"><a href="{% url 'about' %}"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;<b>关于</b></a></li>
         </ul>
@@ -70,14 +70,14 @@
     </div><!-- /.container-fluid -->
   </nav>
   {% if not user.is_authenticated and not PageFlag %}
-  <h2 style="text-align:center;">请先登录，即将跳转至登陆页面...</h2>
-  <script type="text/javascript">
-      var timeout = setTimeout(function () {
-          window.location.href = "{% url 'login' %}";
-      },1000)
-  </script>
+      <h2 style="text-align:center;">请先登录，即将跳转至登陆页面...</h2>
+      <script type="text/javascript">
+          var timeout = setTimeout(function () {
+              window.location.href = "{% url 'login' %}";
+          },1000)
+      </script>
   {% else %}
-    {% block content %}{% endblock  %}
+      {% block content %}{% endblock  %}
   {% endif %}
   
   <!-- back to top -->

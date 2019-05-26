@@ -16,11 +16,11 @@
     e-mail   : {{ User.email }}<br>
     age      : {{ UserProfile.age }}<br>
     性别 :
-        {% if UserProfile.gender == male %}
+        {% if UserProfile.gender == 'male' %}
             男
         {% else %}
-            女<br>
-        {% endif %}
+            女
+        {% endif %}<br>
     <a href="{% url 'change' %}">修改信息</a>
 </div>
 {% endblock  %}
