@@ -208,7 +208,7 @@ def checkin(request,id):
                 errors.append('请输入第%d篇论文的开始页码'%(i+1,))
             if Pages_End == "":
                 errors.append('请输入第%d篇论文的结束页码'%(i+1,))
-            if Abstract == "":
+            if Abstract.strip() == "":
                 errors.append('请输入第%d篇论文的摘要'%(i+1,))
 
             # 为了能在出错的时候把数据还原，不管是否存在，都放进字典
@@ -217,7 +217,7 @@ def checkin(request,id):
             paper['KeyWords'] = KeyWords
             paper['Pages_Start'] = Pages_Start
             paper['Pages_End'] = Pages_End
-            paper['Abstract'] = Abstract
+            paper['Abstract'] = Abstract.strip()
             papers.append(paper)
         # 内容验证成功
         if len(errors) == 0:

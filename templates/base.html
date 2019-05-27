@@ -34,8 +34,11 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li class= "nav-item {% block nav_index_active %}{% endblock %}"><a href="{% url 'index' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<b>主页</b><span class="sr-only">(current)</span></a></li>
-          <li class= "nav-item {% block nav_periodical_active %}{% endblock %}"><a href="{% url 'barperiodical' %}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;<b>期刊</b></a></li>
+          <li class= "nav-item {% block nav_periodical_active %}{% endblock %}"><a href="{% url 'barperiodical' %}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;<b>期刊总览</b></a></li>
           <li class= "nav-item {% block nav_borrowlist_active %}{% endblock %}"><a href="{% url 'borrowlist' %}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;<b>借阅记录</b></a></li>
+          {% if user.is_staff %}
+          <li class= "nav-item {% block nav_addlist_active %}{% endblock %}"><a href="{% url 'addlist' %}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;<b>征订记录</b></a></li>
+          {% endif %}
           <li class= "nav-item {% block nav_about_active %}{% endblock %}"><a href="{% url 'about' %}"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;<b>关于</b></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -52,7 +55,7 @@
                       <li><a href="{% url 'password' %}"><b>修改密码</b></a></li>
                       {% if user.is_staff %}
                       <li><a href="{% url 'admin:index' %}"><b>后台管理</b></a></li></li>
-                      <li><a href="{% url 'addlist' %}"><b>征订列表</b></a></li></li>
+                      <li><a href="{% url 'add' %}"><b>征订新刊</b></a></li></li>
                       {% endif %}
                       <li role="separator" class="divider"></li>
                       <li><a href="{% url 'logout' %}"><b>退出</b></a></li>
@@ -78,6 +81,7 @@
       </script>
   {% else %}
       {% block content %}{% endblock  %}
+      <br><br><br>
   {% endif %}
   
   <!-- back to top -->

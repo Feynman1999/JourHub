@@ -11,31 +11,61 @@
 
 
 {% block content %}
-<div>
-    <h2>期刊名:{{ periodical.Name }}</h2>
-    <h4><a href="/periodical/borrow={{ periodical.id }}+30">借刊</a> </h4><br>
-    年：{{ periodical.Year }}
-    卷: {{ periodical.Volume }}
-    期: {{ periodical.Phase }}
-    发布周期:{{ periodical.Cycle }}
-    邮政编码：{{ periodical.Postal }}
-    CN编号：{{ periodical.CN }}
-    ISSN: {{ periodical.ISSN }}
-    地址： {{ periodical.Locus }}
-    库存： {{ periodical.Reserve }}
-    总量： {{ periodical.Total }}
-    征订日期： {{ periodical.Order_Time }}<br><br>
-    库存为：{{ periodical.Reserve }} 
-    总数为：{{ periodical.Total }}<br><br>
-    包含论文为：<br><br>
-    {% for paper in papers %}
-        论文题目：<a href="/periodical/paper/{{ paper.id }}">{{ paper.Title }}</a>
-        作者：{{ paper.Auther }}
-        关键词：{{ paper.KeyWords }}
-        页码： {{ paper.Pages_Start }} ~ {{ paper.Pages_End }}<br>
-        <p>{{ paper.Abstract }}</p><br>
-    {% empty %}
-        <h3>No paper</h3>
-    {% endfor %}
+
+<div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-3">
+            <a href="{% url 'periodical' periodical.Name %}" class="thumbnail">
+                    <img style="height:200px;" src="{% static periodical.Name|add:'.png' %}" class="img-responsive" onerror="javascript:this.src='{% static 'logo2.png' %}' ">
+            </a>
+        </div>
+        <div class="col-md-5" style="margin-left: 27px;">
+                <h1 style="font-family: SimHei">{{ periodical.Name }}, {{ periodical.Locus }}</h1>
+                <br>
+                <h2 style="font-family: SimHei">
+                    {{ periodical.Year }}年
+                    第{{ periodical.Volume }}卷
+                    （第{{ periodical.Phase }}期）
+                </h2>
+                <h4>库存： {{ periodical.Reserve }}</h4>
+                <h4>征订日期： {{ periodical.Order_Time }}</h4>
+                <a href="/periodical/borrow={{ periodical.id }}+30" class="pull-right"><button class="btn-lg btn-primary" type="button">点击借刊</button></a>
+        </div>
+        <div class="col-md-2"></div>
 </div>
+
+<div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <div class="row" style="text-align: center">
+                    <h3>
+                        <img height="26px" src="{% static '3.png' %}" style="display: inline-block">
+                        <b>包含论文 ({{papers|length}}) </b>
+                        <img height="26px" src="{% static '3.png' %}" style="display: inline-block">
+                    </h3>
+            </div><br>
+            {% ifnotequal papers|length 0 %}
+                <table class="table table-hover">
+                    <tr class="success">
+                        <th>论文题目</th>
+                        <th>作者</th>
+                        <th>关键词</th>
+                        <th>对应页码</th>
+                    </tr>
+                    {% for it in papers %}
+                        <tr>
+                            <td><b><a href="/periodical/paper/{{ it.id }}">{{ it.Title }}</a></b></td>
+                            <td>{{ it.Auther }}</td>
+                            <td>{{ it.KeyWords }}</td>
+                            <td>{{ it.Pages_Start }} ~ {{ it.Pages_End }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <div style="text-align: center"><h4><b>暂时还没有论文信息，我们会尽快登记~ o(*￣▽￣*)o</b></h4></div>
+            {% endifnotequal %}
+        </div>
+        <div class="col-xs-2"></div>
+</div>
+
 {% endblock  %}

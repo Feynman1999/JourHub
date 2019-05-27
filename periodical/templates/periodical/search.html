@@ -30,13 +30,15 @@
                         </select>&nbsp;&nbsp;
                         <input style="width: 350px" type="text" class="form-control" placeholder="输入您要查询的关键字" value="{{ context }}" name="context">&nbsp;&nbsp;&nbsp;  
                         <button type="submit" class="btn btn-primary">搜索</button>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span class="text-info"><b>高级搜索</b></span>
-                        <input class="form-control" type="radio" name="level" value="True" {% if level %}checked="checked"{% endif %} id="ads_yes">是
-                        <input class="form-control" type="radio" name="level" value="False" {% if not level %}checked="checked"{% endif %} id="ads_no">否
+                        <button type="button" class="btn btn-info">
+                                <span><b>高级搜索</b></span>
+                                <input type="radio" name="level" value="True" {% if level %}checked="checked"{% endif %} id="ads_yes">是
+                                <input type="radio" name="level" value="False" {% if not level %}checked="checked"{% endif %} id="ads_no">否
+                        </button>
                     </div><br>
                     <div class="form-inline" id="ads">
                         {% if level %}
-                            {%if level.Year %}
+                            {%if type == "periodical" %}
                                 <button type="button" class="btn btn-success btn-circle">年</button>
                                 <input style="width: 100px" type="number" value="{{ level.Year }}" name="Year" class="form-control">&nbsp;
                                 <button type="button" class="btn btn-danger btn-circle">卷</button>

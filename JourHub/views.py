@@ -7,7 +7,7 @@ from periodical import models
 def index(request):
     context = {}
     context['periodicals'] = models.Periodical.objects.filter(Status=True).order_by('-Borrow_Count')[:5]
-    queryList = models.Borrow.objects.all().order_by('-id')[:5]
+    queryList = models.Borrow.objects.all().order_by('-id')[:6]
     tmpList = []
     for it in queryList:
         tmpDict = {}

@@ -10,27 +10,56 @@
 {% endblock  %}
 
 {% block content %}
-<div>
     {% if basic %}
-        <h1>期刊名:{{ basic.Name }}</h1>
-        发布周期:{{ basic.Cycle }}
-        邮政编码：{{ basic.Postal }}
-        CN编号：{{ basic.CN }}
-        ISSN: {{ basic.ISSN }}
-        地址： {{ basic.Locus }}<br>
+        <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-3">
+                    <a href="{% url 'periodical' basic.Name %}" class="thumbnail">
+                            <img style="height:200px;" src="{% static basic.Name|add:'.png' %}" class="img-responsive" onerror="javascript:this.src='{% static 'logo2.png' %}' ">
+                    </a>
+                </div>
+                <div class="col-md-5" style="margin-left: 27px;">
+                        <h1 style="font-family: SimHei">{{ basic.Name }}, {{ basic.Locus }}</h1>
+                        <br>
+                        <h4>邮政编码: <a href="https://www.youbianku.com/{{basic.Postal}}">{{ basic.Postal }}</a></h4>
+                        <h4>发布周期: {{ basic.Cycle }}天</h4>
+                        <h4 style="display: inline;">CN编号: {{ basic.CN }}</h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <h4 style="display: inline;">ISSN: {{ basic.ISSN }}</h4>
+                </div>
+                <div class="col-md-2"></div>
+        </div>
     {% endif %}
-    期刊数量:{{ result | length }}<br>
-    {% for it in result %}
-        期刊名:<a href="/periodical/{{ it.id }}">{{ it.Name }}</a>
-        年：{{ it.Year }}
-        卷: {{ it.Volume }}
-        期: {{ it.Phase }}
-        库存： {{ it.Reserve }}
-        总量： {{ it.Total }}
-        征订日期： {{ it.Order_Time }}<br>
-        
-    {% empty %}
-        <h3>No Result</h3>
-    {% endfor %}
-</div>
+
+    <div class="row">
+            <div class="col-xs-2"></div>
+            <div class="col-xs-8">
+                <div class="row" style="text-align: center">
+                        <h3>
+                            <img height="26px" src="{% static '3.png' %}" style="display: inline-block">
+                            <b>本站已订的{{basic.Name}}期刊</b>
+                            <img height="26px" src="{% static '3.png' %}" style="display: inline-block">
+                        </h3>
+                </div><br>
+                {% ifnotequal result|length 0 %}
+                    <table class="table table-hover">
+                        <tr class="success">
+                            <th>期刊名</th>
+                            <th>库存</th>
+                            <th>总量</th>
+                        </tr>
+                        {% for it in result %}
+                            <tr>
+                                <td><b><a href="/periodical/{{ it.id }}">{{ it.Name }} {{it.Year}}年第{{it.Volume}}卷 ( 第{{it.Phase}}期 )</a></b></td>
+                                <td>{{ it.Reserve }}</td>
+                                <td>{{ it.Total }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    <div style="text-align: center"><h4><b>暂时还没有，我们会尽快订阅~ o(*￣▽￣*)o</b></h4></div>
+                {% endifnotequal %}
+            </div>
+            <div class="col-xs-2"></div>
+    </div>
+
 {% endblock  %}

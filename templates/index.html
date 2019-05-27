@@ -41,53 +41,58 @@
     </div>
     <div class="col-md-2"></div>
 </div>
+<br>
+<div class="row">
+    <div class="col-xs-1"></div>
+    <div class="col-xs-10">
+        <div class="row" style="text-align: center">
+            <h3>
+                <img height="26px" src="{% static '1.png' %}" style="display: inline-block">
+                <b>热门期刊</b>
+                <img height="26px" src="{% static '2.png' %}" style="display: inline-block">
+            </h3>
+        </div><br>
+        <div class="row">
+            {% for it in periodicals %}
+                <div class="col-xs-2">
+                    <a href="periodical/{{ it.id }}" class="thumbnail">
+                        <img class="resize" src="{% static it.Name|add:'.png' %}" class="img-responsive" onerror="javascript:this.src='{% static 'logo2.png' %}' ">
+                    </a>
+                    <div style="text-align: center"><a href="periodical/{{ it.id }}"><b>{{ it.Name }} {{ it.Year }}年{{ it.Volume }}卷{{ it.Phase }}期</b></a> &nbsp 借阅次数:{{ it.Borrow_Count }}</div>
+                </div>
+            {% empty %}
+                <div style="text-align: center"><h4>目前没有热门期刊/(ㄒoㄒ)/~~</h4></div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-xs-1"></div>
+</div><br><br>
 
 <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <div class="panel panel-danger">
-            <div class="panel-heading">
-                <h3 class="panel-title"><b>热门期刊</b></h3>
-            </div>
-            <div class="panel-body">
-                {% for it in periodicals %}
-                    <h4><a href="periodical/{{ it.id }}">{{ it.Name }}</a></h4>
-                    年：{{ it.Year }}
-                    卷: {{ it.Volume }}
-                    期: {{ it.Phase }}
-                    发布周期:{{ it.Cycle }}
-                    借阅次数:{{ it.Borrow_Count }}<br>
+        <div class="col-xs-1"></div>
+        <div class="col-xs-10">
+            <div class="row" style="text-align: center">
+                <h3>
+                    <img height="26px" src="{% static '1.png' %}" style="display: inline-block">
+                    <b>最新借阅</b>
+                    <img height="26px" src="{% static '2.png' %}" style="display: inline-block">
+                </h3>
+            </div><br>
+            <div class="row">
+                {% for it in borrow %}
+                    <div class="col-xs-2">
+                        <a href="periodical/{{ it.borrow.Period_id }}" class="thumbnail">
+                            <img class="resize" src="{% static it.period.Name|add:'.png' %}" class="img-responsive" onerror="javascript:this.src='{% static 'logo2.png' %}' ">
+                        </a>
+                        <div style="text-align: center"><a href="periodical/{{ it.borrow.Period_id }}"><b>{{ it.period.Name }} {{ it.period.Year }}年{{ it.period.Volume }}卷{{ it.period.Phase }}期</b></a><br>
+                        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>{{ it.borrow.Borrow_Time }}</div>
+                    </div>
                 {% empty %}
-                    <h4>目前没有热门期刊/(ㄒoㄒ)/~~</h4>
+                    <div style="text-align: center"><h4>目前没有借阅信息/(ㄒoㄒ)/~~</h4></div>
                 {% endfor %}
             </div>
         </div>
-    </div>
-    <div class="col-md-2"></div>
-</div><br>
-
-<div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><b>最新借阅</b></h3>
-                </div>
-                <div class="panel-body">
-                    {% for it in borrow %}
-                        期刊名:<h4><a href="periodical/{{ it.borrow.Period_id }}">{{ it.period.Name }}</a></h4>
-                        年：{{ it.period.Year }}
-                        卷: {{ it.period.Volume }}
-                        期: {{ it.period.Phase }}
-                        库存:{{ it.period.Reserve }}
-                        借阅时间:{{ it.borrow.Borrow_Time }}<br>
-                    {% empty %}
-                        <h4>目前没有借阅信息/(ㄒoㄒ)/~~</h4>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2"></div>
+        <div class="col-xs-1"></div>
 </div>
 
 {% endblock  %}

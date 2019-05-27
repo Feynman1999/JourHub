@@ -15,3 +15,7 @@ nav.navbar{
     line-height: 1.428571429;
     border-radius: 15px;
 }
+
+img.resize {
+    height:148px;
+}

@@ -9,36 +9,88 @@
     <link rel="stylesheet" href="{% static 'periodical/css/addlist.css' %}">
 {% endblock  %}
 
+{% block nav_addlist_active %}
+    active
+{% endblock %}
+
 {% block content %}
-<div>
-    <a href="{% url 'add' %}">添加期刊</a>
-    <h3><p>未登记的期刊</p></h3><br>
-    {% for result in notcheck %}
-        期刊名:{{ result.Name }}
-        年：{{ result.Year }}
-        期: {{ result.Phase }}
-        征订日期： {{ result.Order_Time }}
-        征订人: {{ result.Responsibler.username }}
-        <a href="{% url 'checkin' result.id %}">登记</a>
-        <br>
-    {% empty %}
-        没有征订了但没有到货的期刊
-    {% endfor %}
-    <br>
-    <!--已经有的的期刊-->
-    <h3><p>登记的期刊</p></h3><br>
-    {% for result in checked %}
-        期刊名:<a href="/periodical/{{ result.id }}"> {{ result.Name }} </a>
-        年：{{ result.Year }}
-        卷: {{ result.Volume }}
-        期: {{ result.Phase }}    
-        库存： {{ result.Reserve }}
-        总量： {{ result.Total }}
-        征订日期： {{ result.Order_Time }}    
-        征订人: {{ result.Responsibler.username }}
-        <br>
-    {% empty %}
-        没有期刊
-    {% endfor %}
+
+<div class="row">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8">
+        <div class="row" style="text-align: center">
+                <h3>
+                    <img height="26px" src="{% static '3.png' %}" style="display: inline-block">
+                    <b>在路上的期刊</b>
+                    <img height="26px" src="{% static '3.png' %}" style="display: inline-block">
+                </h3>
+        </div><br>
+        {% ifnotequal notcheck|length 0 %}
+            <table class="table table-hover">
+                <tr class="success">
+                    <th>期刊名</th>
+                    <th>年</th>
+                    <th>期</th>
+                    <th>征订日期</th>
+                    <th>征订人</th>
+                    <th>操作</th>
+                </tr>
+                {% for it in notcheck %}
+                    <tr>
+                        <td><b>{{ it.Name }}</b></td>
+                        <td>{{ it.Year }}</td>
+                        <td>{{ it.Phase }}</td>
+                        <td>{{ it.Order_Time }}</td>
+                        <td>{{ it.Responsibler.username }}</td>
+                        <td><a href="{% url 'checkin' it.id %}">到货了?点此登记</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <div style="text-align: center"><h4><b>所有期刊均已到货并登记啦(●ˇ∀ˇ●)</b></h4></div>
+        {% endifnotequal %}
+    </div>
+    <div class="col-xs-2"></div>
+</div>
+
+<!--已经有的的期刊-->
+<div class="row">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8">
+        <div class="row" style="text-align: center">
+                <h3>
+                    <img height="26px" src="{% static '3.png' %}" style="display: inline-block">
+                    <b>已登记的期刊</b>
+                    <img height="26px" src="{% static '3.png' %}" style="display: inline-block">
+                </h3>
+        </div><br>
+        {% ifnotequal checked|length 0 %}
+            <table class="table table-hover">
+                <tr class="danger">
+                    <th>期刊名</th>
+                    <th>年</th>
+                    <th>卷</th>
+                    <th>期</th>
+                    <th>征订日期</th>
+                    <th>征订人</th>
+                    <th>总量</th>
+                </tr>
+                {% for it in checked %}
+                    <tr>
+                        <td><b><a href="/periodical/{{ it.id }}">{{ it.Name }}</a></b></td>
+                        <td>{{ it.Year }}</td>
+                        <td>{{ it.Volume }}</td>
+                        <td>{{ it.Phase }}</td>
+                        <td>{{ it.Order_Time }}</td>
+                        <td>{{ it.Responsibler.username }}</td>
+                        <td>{{ it.Total }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <div style="text-align: center"><h4><b>还没有登记的期刊哦/(ㄒoㄒ)/~~</b></h4></div>
+        {% endifnotequal %}
+    </div>
+    <div class="col-xs-2"></div>
 </div>
 {% endblock  %}

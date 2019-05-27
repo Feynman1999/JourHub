@@ -9,6 +9,7 @@ word-wrap : break-word;
 
 nav.navbar{
 border-bottom: 1.5px solid rgb(194, 189, 189);
+margin-bottom: 40px;
 }
 
 .navbar-default .navbar-nav > .active > a,

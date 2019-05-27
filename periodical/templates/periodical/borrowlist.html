@@ -17,7 +17,7 @@
 <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8">
-            <div class="row" style="text-align: center"><h4>{{ message }}</h4></div><br>
+            <div class="row" style="text-align: center"><h3><b>{{ message }}</b></h3></div><br>
             <div class="row" style="text-align: center">
                 {% if user.is_staff %}
                     <form action="{% url 'borrowlist' %}" method="POST">
@@ -38,9 +38,9 @@
                             {% endif %}
                         </select>
                             {% if CONTEXT %}
-                                <input type="text" name="context" class="form-control" value="{{ CONTEXT }}">
+                                <input style="width: 250px" type="text" name="context" class="form-control" value="{{ CONTEXT }}">
                             {% else %}
-                                <input type="text" name="context" class="form-control" placeholder="输入查询关键字">
+                                <input style="width: 250px" type="text" name="context" class="form-control" placeholder="输入查询关键字">
                             {% endif %}
                                 <button type="submit" class="btn btn-primary">搜索</button>
                         </div>
@@ -63,7 +63,7 @@
                             {% for it in result %}
                                 <tr>
                                     <td>{{ it.id }}</td>
-                                    <td><a href="/periodical/{{ it.period.id }}">{{ it.period.Name }}</a></td>
+                                    <td><a href="/periodical/{{ it.period.id }}">{{ it.period.Name }} {{it.period.Year}}年第{{it.period.Phase}}期</a></td>
                                     <td><a href="/users/profile/?id={{ it.user.id }}">{{ it.user.username }}</a></td>
                                     <td>{{ it.borrow.Borrow_Time }}</td>
                                     <td>{{ it.borrow.Borrow_Duration }}</td>
@@ -79,7 +79,7 @@
                             {% endfor %}
                         </table>
                     {%else%}
-                    <div style="text-align: center"><h4>暂无借阅记录</h4></div>
+                    <div style="text-align: center"><h4>无相关借阅记录</h4></div>
                     {% endifnotequal %}
             </div>
     </div>

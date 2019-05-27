@@ -10,23 +10,72 @@
 {% endblock  %}
 
 {% block content %}
-<div>
-    <h5>{{ message }}</h5>
-    <form action="{% url 'add' %}" method="POST">
-        {% csrf_token %}
-        期刊名字:<input type="text" name="Name"><br>
-        年:<input type="number" name="Year"><br>
-        订阅期数:<input type="number" name="Number"><br>
-        开始期号:<input type="number" name="Phase"><br>
-        发行周期:<input type="number" name="Cycle"><br>
-        邮政编码:<input type="number" name="Postal"><br>
-        CN号:<input type="number" name="CN"><br>
-        ISSN号:<input type="number" name="ISSN"><br>
-        所在地:<input type="text" name="Locus"><br>
-        总数:<input type="number" name="Total"><br>
-        <input type="submit" value="添加"><br>
-    </form>
-    
+
+<div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><b>征订期刊</b><span class="text-danger pull-right">{{ message.0 }}</span></h3>
+                </div>
+                <div class="panel-body">
+                    <form action="{% url 'add' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <label>期刊名</label>
+                          <input type="text" class="form-control" placeholder="输入期刊名" name="Name">
+                        </div>
+                        <div class="form-inline">
+                                <div class="form-group">
+                                        <label>年</label>
+                                        <input style="width: 90px;" type="number" class="form-control" placeholder="输入年份" name="Year" value="2019">
+                                </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="form-group">
+                                    <label>订阅的期数</label>
+                                    <input style="width: 90px;" type="number" class="form-control" placeholder="输入订阅期数" name="Number" value="1">
+                                </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="form-group">
+                                        <label>开始期号</label>
+                                        <input style="width: 140px;"  type="number" class="form-control" placeholder="输入开始期号" name="Phase">
+                                </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="form-group">
+                                        <label>发行周期</label>
+                                        <input style="width: 90px;" type="number" class="form-control" placeholder="输入发行周期" name="Cycle" value="30">
+                                </div>        
+                        </div>
+                        <br>
+                        <div class="form-inline">
+                                <div class="form-group">
+                                        <label>邮政编码</label>
+                                        <input style="width: 150px;" type="number" class="form-control" placeholder="输入邮政编码" name="Postal">
+                                </div>&nbsp;&nbsp;&nbsp;&nbsp;      
+                                <div class="form-group">
+                                        <label>CN号</label>
+                                        <input style="width: 200px;" type="number" class="form-control" placeholder="输入CN号" name="CN">
+                                </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="form-group">
+                                        <label>总数</label>
+                                        <input style="width: 150px;" type="number" class="form-control" placeholder="输入订阅总数" name="Total">
+                                </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>                        
+                        <br>
+                        <div class="form-inline">
+                                <div class="form-group">
+                                        <label>ISSN号</label>
+                                        <input style="width: 150px;" type="number" class="form-control" placeholder="输入ISSN号" name="ISSN">
+                                </div>&nbsp;&nbsp;&nbsp;&nbsp;      
+                                <div class="form-group">
+                                        <label>所在地</label>
+                                        <input style="width: 200px;" type="text" class="form-control" placeholder="输入所在地" name="Locus">
+                                </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary pull-right">确定</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
 </div>
+    
 {% endblock  %}
 
