@@ -23,7 +23,7 @@
                         {% csrf_token %}
                         <div class="form-group">
                           <label>期刊名</label>
-                          <input type="text" class="form-control" placeholder="输入期刊名" name="Name">
+                          <input type="text" class="form-control" placeholder="输入期刊名" name="Name" value="{{ Name }}">
                         </div>
                         <div class="form-inline">
                                 <div class="form-group">
@@ -36,7 +36,7 @@
                                 </div>&nbsp;&nbsp;&nbsp;&nbsp;
                                 <div class="form-group">
                                         <label>开始期号</label>
-                                        <input style="width: 140px;"  type="number" class="form-control" placeholder="输入开始期号" name="Phase">
+                                        <input style="width: 140px;"  type="number" class="form-control" placeholder="输入开始期号" name="Phase" value="{{ Phase }}">
                                 </div>&nbsp;&nbsp;&nbsp;&nbsp;
                                 <div class="form-group">
                                         <label>发行周期</label>
@@ -47,26 +47,26 @@
                         <div class="form-inline">
                                 <div class="form-group">
                                         <label>邮政编码</label>
-                                        <input style="width: 150px;" type="number" class="form-control" placeholder="输入邮政编码" name="Postal">
+                                        <input style="width: 150px;" type="number" class="form-control" placeholder="输入邮政编码" name="Postal" value="{{ Postal }}">
                                 </div>&nbsp;&nbsp;&nbsp;&nbsp;      
                                 <div class="form-group">
                                         <label>CN号</label>
-                                        <input style="width: 200px;" type="number" class="form-control" placeholder="输入CN号" name="CN">
+                                        <input style="width: 200px;" type="text" class="form-control" placeholder="输入CN号" name="CN" value="{{ CN }}">
                                 </div>&nbsp;&nbsp;&nbsp;&nbsp;
                                 <div class="form-group">
                                         <label>总数</label>
-                                        <input style="width: 150px;" type="number" class="form-control" placeholder="输入订阅总数" name="Total">
+                                        <input style="width: 150px;" type="number" class="form-control" placeholder="输入订阅总数" name="Total" value="{{ Total }}">
                                 </div>&nbsp;&nbsp;&nbsp;&nbsp;
                         </div>                        
                         <br>
                         <div class="form-inline">
                                 <div class="form-group">
                                         <label>ISSN号</label>
-                                        <input style="width: 150px;" type="number" class="form-control" placeholder="输入ISSN号" name="ISSN">
+                                        <input style="width: 150px;" type="text" class="form-control" placeholder="输入ISSN号" name="ISSN" value="{{ ISSN }}">
                                 </div>&nbsp;&nbsp;&nbsp;&nbsp;      
                                 <div class="form-group">
                                         <label>所在地</label>
-                                        <input style="width: 200px;" type="text" class="form-control" placeholder="输入所在地" name="Locus">
+                                        <input style="width: 200px;" type="text" class="form-control" placeholder="输入所在地" name="Locus" value="{{ Locus }}">
                                 </div>
                         </div>
                         <button type="submit" class="btn btn-primary pull-right">确定</button>

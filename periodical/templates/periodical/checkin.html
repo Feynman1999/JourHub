@@ -22,7 +22,7 @@
             {% csrf_token %}
             <div class="row" style="text-align: center; font-size: 120%;">
                 <div class="form-inline">
-                    年：{{ periodical.Year }}&nbsp;&nbsp;&nbsp;&nbsp;<span>卷: <input style="width: 100px;" class="form-control" type="text" name="Volume"></span>&nbsp;&nbsp;&nbsp;&nbsp;期: {{ periodical.Phase }}
+                    年：{{ periodical.Year }}&nbsp;&nbsp;&nbsp;&nbsp;<span>卷: <input style="width: 100px;" class="form-control" type="text" name="Volume" value="{{ Volume }}"></span>&nbsp;&nbsp;&nbsp;&nbsp;期: {{ periodical.Phase }}
                 </div>
             </div>
             {% if message %}
