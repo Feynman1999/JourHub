@@ -19,7 +19,7 @@
                     <img style="height:200px;" src="{% static periodical.Name|add:'.png' %}" class="img-responsive" onerror="javascript:this.src='{% static 'logo2.png' %}' ">
             </a>
         </div>
-        <div class="col-md-5" style="margin-left: 27px;">
+        <div class="col-md-5" style="margin-left: 37px;">
                 <h1 style="font-family: SimHei">{{ periodical.Name }}, {{ periodical.Locus }}</h1>
                 <br>
                 <h2 style="font-family: SimHei">
@@ -29,10 +29,10 @@
                 </h2>
                 <h4>库存： {{ periodical.Reserve }}</h4>
                 <h4>征订日期： {{ periodical.Order_Time }}</h4>
-                <a href="/periodical/borrow={{ periodical.id }}+30" class="pull-right"><button class="btn-lg btn-primary" type="button">点击借刊</button></a>
+                <a style="margin-right: 50px;" href="/periodical/borrow={{ periodical.id }}+30" class="pull-right"><button class="btn-lg btn-primary" type="button">点击借刊</button></a>
         </div>
         <div class="col-md-2"></div>
-</div>
+</div><br>
 
 <div class="row">
         <div class="col-xs-2"></div>

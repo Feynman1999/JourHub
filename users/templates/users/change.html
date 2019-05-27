@@ -10,27 +10,53 @@
 {% endblock  %}
 
 {% block content %}
-
-<div>
-    <form action="{% url 'change' %}" method="POST">
-        {% csrf_token %}
-        username : {{ User.username }}<br>
-        nickname : <input type="text" name="nickname" value="{{ UserProfile.nickname }}"><br>
-        e-mail   : <input type="email" name="email" value="{{ User.email }}"><br>
-        age      : <input type="number" name="age" value="{{ UserProfile.age }}"><br>
-        性别 :<select name="gender">
-            {% if UserProfile.gender == male %}
-                <option value="male" selected="selected">男</option>
-                <option value="female">女</option>
-            {% else %}
-                <option value="male" >男</option>
-                <option value="female" selected="selected">女</option>
-            {% endif %}
-        </select><br>
-        <input type="submit" value="确认修改">
-    </form>
-    <p>{{message}}</p>
+<div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><b>修改信息</b><span class="text-danger pull-right">{{ message.0 }}</span></h3>
+                </div>
+                <div class="panel-body">
+                    <form action="{% url 'change' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <label>用户名</label>
+                          <input disabled="disabled" type="text" class="form-control" name="username" value="{{User.username}}">
+                        </div>
+                        <div class="form-group">
+                            <label>昵称</label>
+                            <input type="text" class="form-control" placeholder="请输入昵称" value="{{ UserProfile.nickname }}" name="nickname">
+                        </div>
+                        <div class="form-group">
+                            <label>E-mail</label>
+                            <input type="email" class="form-control" value="{{ User.email }}" placeholder="请输入邮箱" name="email">
+                        </div>
+                        <div class="form-inline">
+                                <label>Age&nbsp;&nbsp;</label>
+                                <input type="number" value="{{ UserProfile.age }}" class="form-control" placeholder="输入您的年龄" name="age">
+                        </div>
+                        <br>
+                        <div class="form-inline">
+                            <label>性别&nbsp;&nbsp;</label>
+                            <select name="gender" class="form-control">
+                                {% if UserProfile.gender == "male" %}
+                                    <option value="male" selected="selected">男</option>
+                                    <option value="female">女</option>
+                                {% else %}
+                                    <option value="male">男</option>
+                                    <option value="female" selected="selected">女</option>
+                                    {% endif %}
+                            </select>   
+                        </div>                
+                        <button type="submit" class="btn btn-primary pull-right">确认修改</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
 </div>
+
 
 {% endblock  %}
 
