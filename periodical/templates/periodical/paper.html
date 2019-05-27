@@ -11,12 +11,25 @@
 
 
 {% block content %}
-<div>
-    论文题目：{{ paper.Title }}
-    作者：{{ paper.Auther }}
-    关键词：{{ paper.keyWords }}
-    页码： {{ paper.Pages_Start }} ~ {{ paper.Pages_End }}
-    摘要：{{ paper.Abstract }}
-    <br>属于: <a href="/periodical/{{ periodical.id }}">{{ periodical.Name }}</a>
+<div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <div class="row" style="text-align: center">
+                    <h1><b>{{ paper.Title }}</b></h1>
+            </div><br>
+            <div class="row" style="text-align: center; font-size: 120%">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;{{ paper.Auther }}
+                &nbsp;&nbsp;
+                <b>关键词：</b>{{ paper.KeyWords }}
+                &nbsp;&nbsp;
+                <b>所属期刊: </b><a href="/periodical/{{ periodical.id }}">{{ periodical.Name }} {{ periodical.Year }}年第{{ periodical.Phase }}期 page{{ paper.Pages_Start }} ~ {{ paper.Pages_End }}</a>
+            </div>
+            <div class="row">
+                <h2><b>摘要</b></h2>
+                <br>
+                <p>{{ paper.Abstract }}</p>
+            </div>
+        </div>
+        <div class="col-xs-2"></div>
 </div>
 {% endblock  %}

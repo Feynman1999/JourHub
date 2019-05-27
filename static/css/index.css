@@ -3,7 +3,7 @@ nav.navbar{
 }
 
 #row_search{
-    background: url(../../search.jpg);
+    background: url(../search.jpg);
 }
 
 .btn-circle{
@@ -14,4 +14,8 @@ nav.navbar{
     font-size: 12px;
     line-height: 1.428571429;
     border-radius: 15px;
+}
+
+img.resize {
+    height:148px;
 }

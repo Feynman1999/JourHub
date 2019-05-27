@@ -10,43 +10,98 @@
 {% endblock  %}
 
 {% block content %}
-<div>
-    <h2>{{ periodical.Name }}</h2><br>
-    
-    <br>
-    {{ message }}
-    <form action="{% url 'checkin' periodical.id %}" method="POST">
-        {% csrf_token %}
-        {% if message %}
-            <p>请修正信息</p><br>
-            年：{{ periodical.Year }}
-            卷: <input type="text" name="Volume">
-            期: {{ periodical.Phase }}
-            {% for it in values %}
-                <h4>第{{forloop.counter}}篇论文</h4><br>        
-                标题:<input type="text" name="Title_{{ forloop.counter }}" value="{{ it.Title }}">
-                作者:<input type="text" name="Auther_{{ forloop.counter }}" value="{{ it.Auther }}">
-                关键词:<input type="text" name="KeyWords_{{ forloop.counter }}" value="{{ it.KeyWords }}">
-                开始页码:<input type="number" name="Pages_Start_{{ forloop.counter }}" value="{{ it.Pages_Start }}">
-                结束页码:<input type="number" name="Pages_End_{{ forloop.counter }}" value="{{ it.Pages_End }}">
-                <br>摘要:<p><input type="text" name="Abstract_{{ forloop.counter }}" value="{{ it.Abstract }}"></p>
-            {% endfor %}
-        {% else %}
-            年：{{ periodical.Year }}
-            卷: <input type="text" name="Volume">
-            期: {{ periodical.Phase }}
-            {% for it in number %}
-                <h4>第{{it}}篇论文</h4><br>        
-                标题:<input type="text" name="Title_{{ it }}">
-                作者:<input type="text" name="Auther_{{ it }}">
-                关键词:<input type="text" name="KeyWords_{{ it }}">
-                开始页码:<input type="number" name="Pages_Start_{{ it }}">
-                结束页码:<input type="number" name="Pages_End_{{ it }}">
-                <br>摘要:<p><input type="text" name="Abstract_{{ it }}"></p>
+
+<div class="row">
+    <div class="col-xs-1"></div>
+    <div class="col-xs-10">
+        <div class="row" style="text-align: center">
+            <h2>《{{ periodical.Name }}》到货啦！ 请录入相关信息</h2>
+            <h4 class="text-danger"><b>{{ message.0 }}</b></h4>
+        </div><br>
+        <form action="{% url 'checkin' periodical.id %}" method="POST">
+            {% csrf_token %}
+            <div class="row" style="text-align: center; font-size: 120%;">
+                <div class="form-inline">
+                    年：{{ periodical.Year }}&nbsp;&nbsp;&nbsp;&nbsp;<span>卷: <input style="width: 100px;" class="form-control" type="text" name="Volume"></span>&nbsp;&nbsp;&nbsp;&nbsp;期: {{ periodical.Phase }}
+                </div>
+            </div>
+            {% if message %}
+                {% for it in values %}
+                    <div class="row">
+                        <div><h3><b>第{{forloop.counter}}篇论文</b></h3></div> 
+                        <br>
+                    </div>
+                    <div class="form-inline"  style="margin-left: 40px;">
+                        <div class="form-group">
+                                <label>标题</label>
+                                <input type="text" class="form-control" name="Title_{{ forloop.counter }}" value="{{ it.Title }}">
+                        </div>&nbsp;&nbsp;&nbsp;
+                        <div class="form-group">
+                                <label>作者</label>
+                                <input type="text" class="form-control" name="Auther_{{ forloop.counter }}" value="{{ it.Auther }}">
+                        </div>&nbsp;&nbsp;&nbsp;
+                        <div class="form-group">
+                                <label>关键词</label>
+                                <input type="text" class="form-control" name="KeyWords_{{ forloop.counter }}" value="{{ it.KeyWords }}">
+                        </div>&nbsp;&nbsp;&nbsp;
+                        <div class="form-group">
+                                <label>开始页码</label>
+                                <input type="number" style="width: 70px;" class="form-control" name="Pages_Start_{{ forloop.counter }}" value="{{ it.Pages_Start }}">
+                        </div>&nbsp;&nbsp;&nbsp;
+                        <div class="form-group">
+                                <label>结束页码</label>
+                                <input type="number" style="width: 70px;" class="form-control" name="Pages_End_{{ forloop.counter }}" value="{{ it.Pages_End }}">
+                        </div>
+                        <br><br>
+                        <div class="form-group">
+                                <label>摘要</label>
+                                <textarea class="form-control" name="Abstract_{{ forloop.counter }}" cols="130" rows="4">{{ it.Abstract }}</textarea>
+                        </div>
+                    </div><br>
+                    <div style=" border-bottom: 2px dashed rgb(168, 173, 250);"></div>
                 {% endfor %}
-        {% endif %}
-            
-        <input type="submit" value="录入"><br>
-    </form>
+            {% else %}
+                {% for it in number %}
+                <div class="row">
+                        <div><h3><b>第{{forloop.counter}}篇论文</b></h3></div> 
+                        <br>
+                    </div>
+                    <div class="form-inline"  style="margin-left: 40px;">
+                        <div class="form-group">
+                                <label>标题</label>
+                                <input type="text" class="form-control" name="Title_{{ forloop.counter }}">
+                        </div>&nbsp;&nbsp;&nbsp;
+                        <div class="form-group">
+                                <label>作者</label>
+                                <input type="text" class="form-control" name="Auther_{{ forloop.counter }}">
+                        </div>&nbsp;&nbsp;&nbsp;
+                        <div class="form-group">
+                                <label>关键词</label>
+                                <input type="text" class="form-control" name="KeyWords_{{ forloop.counter }}">
+                        </div>&nbsp;&nbsp;&nbsp;
+                        <div class="form-group">
+                                <label>开始页码</label>
+                                <input type="number" style="width: 70px;" class="form-control" name="Pages_Start_{{ forloop.counter }}">
+                        </div>&nbsp;&nbsp;&nbsp;
+                        <div class="form-group">
+                                <label>结束页码</label>
+                                <input type="number" style="width: 70px;" class="form-control" name="Pages_End_{{ forloop.counter }}">
+                        </div>
+                        <br><br>
+                        <div class="form-group">
+                                <label>摘要</label>
+                                <textarea class="form-control" name="Abstract_{{ forloop.counter }}" cols="130" rows="4"></textarea>
+                        </div>
+                    </div><br>
+                    <div style=" border-bottom: 2px dashed rgb(168, 173, 250);"></div>
+                {% endfor %}
+            {% endif %}
+            <br>
+            <button type="submit" class="btn-lg btn-primary pull-right" style="margin-right: 45px">录入</button>
+        </form>
+    </div>
+    <div class="col-xs-1"></div>
 </div>
+
+
 {% endblock  %}

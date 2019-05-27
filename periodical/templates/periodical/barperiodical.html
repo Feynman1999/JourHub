@@ -15,6 +15,9 @@
 
 {% block content %}
 
+<div class="row">
+    <div style="text-align:center"><h2><b>收录期刊总览 ( 共{{ periodicals|length }}种 )</b></h2></div> 
+</div><br>
 
 <div class="row">
     <div class="col-md-1"></div>
@@ -23,13 +26,12 @@
             {% for it in periodicals %}
                 <div class="col-xs-2">
                     <a href="{% url 'periodical' it.Name %}" class="thumbnail">
-                        <img src="{% static it.Name|add:'.png' %}" class="img-responsive" onerror="javascript:this.src='{% static 'logo2.png' %}' ">
+                        <img class="resize" src="{% static it.Name|add:'.png' %}" class="img-responsive" onerror="javascript:this.src='{% static 'logo2.png' %}' ">
                     </a>
                     <div style="text-align: center"><a href="{% url 'periodical' it.Name %}"><b>{{ it.Name }}</b></a></div>
                 </div>
             {% endfor %}
         </div>
-        <h3 style="text-align:center">一共{{ periodicals|length }}种期刊</h3>
     </div>
     <div class="col-md-1"></div>
 </div>
