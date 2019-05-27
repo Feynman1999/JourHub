@@ -98,13 +98,12 @@ def logout(request):
 # 查看用户信息
 def profile(request):
     # 获得当前的数据
-    if request.method == 'GET' and request.user.is_staff:
+    if request.user.is_authenticated == False:
+        return redirect('/')
+    if request.user.is_staff:
         now_id = request.GET.get('id')
-        # if now_id != request.user.id:
-        #     return redirect('/users/profile/?id=%d'%(request.user.id))
-    else:
+    if now_id == None:
         now_id = request.user.id
-    
     try:
         Query_User = auth.models.User.objects.get(id=now_id)
     except models.User.DoesNotExist:

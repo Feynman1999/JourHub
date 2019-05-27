@@ -88,7 +88,7 @@ def search(request):
 
 # 访问哪一个期刊
 def get_periodicals(request,name):
-    periodicals = models.Periodical.objects.filter(Name = name,Status=True)
+    periodicals = models.Periodical.objects.filter(Name = name,Status=True).order_by('-id')
     context={}
     periodList = list(periodicals)
     if len(periodList) != 0:
@@ -161,7 +161,16 @@ def add(request):
             return redirect('/periodical/addlist')
             
         else:
-            return render(request,'periodical/add.html',{'message':errors})
+            context = {}
+            context['message'] = errors
+            context['Name'] = Name
+            context['Phase'] = Phase
+            context['Postal'] = Postal
+            context['CN'] = CN
+            context['ISSN'] = ISSN
+            context['Locus'] = Locus
+            context['Total'] = Total
+            return render(request,'periodical/add.html',context)
     return render(request,'periodical/add.html')
 
 # 征订列表
@@ -189,6 +198,7 @@ def checkin(request,id):
         Volume = request.POST.get('Volume')
         if Volume == "":
             errors.append('请输入卷号')
+            
         number = tmpPeriod.PaperNumber
         for i in range(number):
             paper = {}
@@ -237,6 +247,7 @@ def checkin(request,id):
             tmpList = []
             for i in range(number):
                 tmpList.append(i+1)
+            context['Volume'] = Volume
             context['number'] = tmpList
             context['periodical']=models.Periodical.objects.get(id=id)        
             context['values'] = papers
