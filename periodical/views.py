@@ -253,18 +253,22 @@ def checkin(request,id):
             context['values'] = papers
             context['message'] = errors
             return render(request,'periodical/checkin.html',context)
-    # addlist jump to here
-    # number = request.method.GET.get('number')
-    number = 3
-    tmpList = []
-    for i in range(number):
-        tmpList.append(i+1)
-    context['number'] = tmpList
-    tmpPeriod = models.Periodical.objects.get(id=id)
-    tmpPeriod.PaperNumber = number
-    tmpPeriod.save()
-    context['periodical']=models.Periodical.objects.get(id=id)
-    return render(request,'periodical/checkin.html',context)
+    else:
+        # addlist jump to here
+        number = request.GET.get('number')
+        if number == None:
+            number = 3
+        else:
+            number = int(number)
+        tmpList = []
+        for i in range(number):
+            tmpList.append(i+1)
+        context['number'] = tmpList
+        tmpPeriod = models.Periodical.objects.get(id=id)
+        tmpPeriod.PaperNumber = number
+        tmpPeriod.save()
+        context['periodical']=models.Periodical.objects.get(id=id)
+        return render(request,'periodical/checkin.html',context)
     
 
 # 借阅期刊

@@ -102,7 +102,9 @@ def profile(request):
         return redirect('/')
     if request.user.is_staff:
         now_id = request.GET.get('id')
-    if now_id == None:
+        if now_id == None:
+            now_id = request.user.id
+    else:
         now_id = request.user.id
     try:
         Query_User = auth.models.User.objects.get(id=now_id)
