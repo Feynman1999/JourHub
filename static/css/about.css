@@ -1,0 +1,16 @@
+.round{
+    display:inline-block;
+    margin:5px auto;
+    height:170px;
+    border-radius:100px;
+    -webkit-border-radius:100px;
+    -moz-border-radius:100px;
+    border:2px solid #fff;
+    box-shadow:0 0 4px #ccc;
+    overflow:hidden;
+}
+
+/*图片的样式*/
+.round img{
+    height: 170px;
+}

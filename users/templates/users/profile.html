@@ -10,17 +10,30 @@
 {% endblock  %}
 
 {% block content %}
-<div>
-    username : {{ User.username }}<br>
-    nickname : {{ UserProfile.nickname }}<br>
-    e-mail   : {{ User.email }}<br>
-    age      : {{ UserProfile.age }}<br>
-    性别 :
-        {% if UserProfile.gender == 'male' %}
-            男
-        {% else %}
-            女
-        {% endif %}<br>
-    <a href="{% url 'change' %}">修改信息</a>
+<br><br>
+<div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-3">
+            <a href="{% url 'profile' %}" class="thumbnail">
+                    <img style="height:200px;" src="{% static UserProfile.gender|add:'.png' %}" class="img-responsive" onerror="javascript:this.src='{% static 'logo2.png' %}' ">
+            </a>
+        </div>
+        <div class="col-md-5" style="margin-left: 37px;">
+                <h1 style="font-family: SimHei">用户名：{{ User.username }}</h1>
+                <br>
+                <h3><span class="text-success">昵称</span>&nbsp;&nbsp;  <span class="pull-right" style="margin-right: 8em;">{% if UserProfile.nickname %}{{UserProfile.nickname}}{% else %}暂无昵称{% endif %}</span></h3>
+                <h3><span class="text-success">E-mail</span>&nbsp;&nbsp;  <span class="pull-right" style="margin-right: 8em;">{% if User.email %}{{User.email}}{% else %}暂无信息{% endif %}</span></h3>
+                <h3><span class="text-success">年龄</span>&nbsp;&nbsp;  <span class="pull-right" style="margin-right: 8em;">{% if UserProfile.age %}{{UserProfile.age}}{% else %}暂无信息{% endif %}</span></h3>
+                <h3><span class="text-success">性别</span>&nbsp;&nbsp;  <span class="pull-right" style="margin-right: 8em;">{% if UserProfile.gender %}
+                        {% if UserProfile.gender == 'male' %}男{% else %}女{% endif %}
+                    {% else %}
+                        暂无信息
+                    {% endif %}
+                </span></h3><br>
+                <a href="{% url 'change' %}" style="margin-right: 12em;" class="pull-right"><button class="btn-lg btn-primary" type="button">修改信息</button></a>
+        </div>
+        <div class="col-md-2"></div>
 </div>
+
+
 {% endblock  %}

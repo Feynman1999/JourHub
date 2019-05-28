@@ -14,6 +14,27 @@
 {% endblock %}
 
 {% block content %}
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">登记</h4>
+                </div>
+                <form id="makesure_number" action="" method="GET" onsubmit="return check2()">
+                        <div class="modal-body">
+                            <label for="">请输入该期刊包含论文的数量：</label> 
+                            <input id="for-check" name="number"  onblur="JavaScript:check1(this)" type="number" class="form-control" placeholder="请填写数字，默认为3">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="submit" class="btn btn-primary">提交</button>
+                        </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+</div>
 
 <div class="row">
     <div class="col-xs-2"></div>
@@ -42,7 +63,7 @@
                         <td>{{ it.Phase }}</td>
                         <td>{{ it.Order_Time }}</td>
                         <td>{{ it.Responsibler.username }}</td>
-                        <td><a href="{% url 'checkin' it.id %}">到货了?点此登记</a></td>
+                        <td><a data-toggle="modal" data-target="#myModal" onclick=makesure_number({{it.id}})>到货了?点此登记</a></td>
                     </tr>
                 {% endfor %}
             </table>
@@ -93,4 +114,34 @@
     </div>
     <div class="col-xs-2"></div>
 </div>
+{% endblock  %}
+
+{% block script %}
+
+<script type="text/javascript">
+function makesure_number(object_id){
+    //更改模态框中表单的action地址
+    if (typeof(object_id) != "number"){
+        alert("Wrong!!!");
+        $("#myModal").remove();
+    }else{
+        var path = "/periodical/checkin/" + String(object_id);
+        $('#makesure_number').attr("action", path);
+    }
+}
+
+
+function check2(){
+    if(String($('#for-check').val())==""){
+        alert('请输入数字,范围为1~100');
+        return false;
+    }
+    else if(parseInt($('#for-check').val())<1 || parseInt($('#for-check').val())>100){
+        alert('请输入数字,范围为1~100');
+        return false;
+    }
+    return true;
+}
+</script>
+
 {% endblock  %}

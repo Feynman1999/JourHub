@@ -1,4 +1,24 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+  
+.footer {
+position: absolute;
+bottom: 0;
+width: 100%;
+/* Set the fixed height of the footer here */
+height: 65px;
+background-color: #4e4e4e;
+}
+
+
+
+
+
 body{
+    margin-bottom: 60px;
     font-size:150%;
     font-family: Tahoma,Helvetica,Arial,'宋体',sans-serif;
 }
