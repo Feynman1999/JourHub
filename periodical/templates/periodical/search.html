@@ -61,34 +61,75 @@
     <div class="col-md-2"></div>
 </div><br>
 
+<div class="row">
+    <div class="col-xs-1"></div>
+    <div class="col-xs-10">
+        <div class="row" style="text-align: center">
+            <h3>
+                <img height="26px" src="{% static '1.png' %}" style="display: inline-block">
+                <b>搜索结果</b>
+                <img height="26px" src="{% static '2.png' %}" style="display: inline-block">
+            </h3>
+        </div><br>
+        <div class="row">
+        {% if type == "periodical" %}
+                    {% ifnotequal result|length 0 %}
+                        <table class="table table-hover">
+                            <tr class="success">
+                                <th>期刊名</th>
+                                <th>年</th>
+                                <th>卷</th>
+                                <th>期</th>
+                                <th>发布日期</th>
+                                <th>库存</th>
+                            </tr>
+                            {% for it in result %}
+                            <tr>
+                                <td><b><a href="/periodical/periodical={{ it.Name }}/">{{ it.Name }}</a></b></td>
+                                <td>{{ it.Year }}</td>
+                                <td>{{ it.Volume }}</td>
+                                <td>{{ it.Phase }}</td>
+                                <td>{{ it.Cycle }}天</td>
+                                <td>{{ it.Reserve }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    {%else%}
+                        <div style="text-align: center"><h4>没有相关信息(⊙﹏⊙)</h4></div>
+                    {%endifnotequal%}
+        {% else %}
 
-<div>
-    搜索结果<br>
-    {% if type == "periodical" %}
-        {% for it in result %}
-            <h4><a href="/periodical/periodical={{ it.Name }}/">{{ it.Name }}</a></h4>
-            年：{{ it.Year }}
-            卷: {{ it.Volume }}
-            期: {{ it.Phase }}
-            发布周期:{{ it.Cycle }}
-            邮政编码：{{ it.Postal }}
-            CN编号：{{ it.CN }}
-            ISSN: {{ it.ISSN }}
-            地址： {{ it.Locus }}
-            库存： {{ it.Reserve }}
-            <br>
-        {% endfor %}
-    {% else %}
-        {% for it in result %}
-            <h4><a href="/periodical/paper/{{ it.id }}/">{{ it.Title }}</a></h4>
-            作者：{{ it.Auther }}
-            关键词：{{ it.keyWords }}
-            页码： {{ it.Pages_Start }} ~ {{ it.Pages_End }}
-            摘要：{{ it.Abstract }}
-            <br>
-        {% endfor %}
-    {% endif %}
+                    {% ifnotequal result|length 0 %}
+                        <table class="table table-hover">
+                            <tr class="danger">
+                                <th>论文名</th>
+                                <th>作者</th>
+                                <th>关键词</th>
+                                <th>所属期刊</th>
+                                <th>页码</th>
+                                <th>摘要</th>
+                            </tr>
+                            {% for it in result %}
+                            <tr>
+                                <td><b><a href="/periodical/paper/{{ it.id }}/">{{ it.Title }}</a></b></td>
+                                <td>{{ it.Auther }}</td>
+                                <td>{{ it.KeyWords }}</td>
+                                <td><b><a href="/periodical/{{it.Belong.id}}">{{ it.Belong}}</a></b></td>
+                                <td>{{ it.Pages_Start }} ~ {{ it.Pages_End }}</td>
+                                <td>{{ it.Abstract|truncatewords:"10" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    {%else%}
+                        <div style="text-align: center"><h4>没有相关信息(⊙﹏⊙)</h4></div>
+                    {%endifnotequal%}
+        {% endif %}
+        </div>
+    </div>
+    <div class="col-xs-1"></div>
 </div>
+
+
 {% endblock  %}
 
 {% block script %}

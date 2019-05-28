@@ -22,10 +22,10 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="myModalLabel">登记</h4>
                 </div>
-                <form id="makesure_number" action="">
+                <form id="makesure_number" action="" method="GET" onsubmit="return check2()">
                         <div class="modal-body">
                             <label for="">请输入该期刊包含论文的数量：</label> 
-                            <input name="number"  onblur="JavaScript:check1(this)" type="number" class="form-control" placeholder="请填写数字，默认为3">
+                            <input id="for-check" name="number"  onblur="JavaScript:check1(this)" type="number" class="form-control" placeholder="请填写数字，默认为3">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -131,14 +131,16 @@ function makesure_number(object_id){
 }
 
 
-function check1(obj){
-    if(parseInt(obj.value)==obj.value && parseInt(obj.value)>=1 && parseInt(obj.value)<=100){
-        ;
-    }
-    else{
+function check2(){
+    if(String($('#for-check').val())==""){
         alert('请输入数字,范围为1~100');
-        obj.value = 3;
+        return false;
     }
+    else if(parseInt($('#for-check').val())<1 || parseInt($('#for-check').val())>100){
+        alert('请输入数字,范围为1~100');
+        return false;
+    }
+    return true;
 }
 </script>
 
