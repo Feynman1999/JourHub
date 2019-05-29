@@ -85,6 +85,7 @@ def search(request):
         context['type'] = SearchType
         context['context'] = Context
         return render(request,'periodical/search.html',context)
+    return redirect('/')
 
 # 访问哪一个期刊
 def get_periodicals(request,name):
@@ -149,7 +150,7 @@ def add(request):
             Number_Phase = 365 // int(Cycle)
             for it in range(int(Number)):
                 # 跨年的时候的时间判断
-                now_Year = int(Year) + (int(Phase) + it) //Number_Phase
+                now_Year = int(Year) + (int(Phase) + it) // (Number_Phase+1)
                 now_Phase = (int(Phase) + it) % Number_Phase
                 if now_Phase == 0:
                     now_Phase = Number_Phase
@@ -364,10 +365,9 @@ def returnPeriod(request,id):
     # 判断是否有还书的权限
     who = auth.models.User.objects.get(username=request.user)
     borrow = models.Borrow.objects.get(id=id)
-    if who.id != borrow.Person_id:
+    if who.id != borrow.Person_id and who.is_staff == False:
         return render(request,'error.html',{'message':'不能还不是自己借阅的期刊'})
 
-    
     borrow.Return_Time = timezone.now()
     borrow.Return = True
     borrow.save()
