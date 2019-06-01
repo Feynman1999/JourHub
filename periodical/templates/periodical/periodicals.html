@@ -25,6 +25,9 @@
                         <h4>发布周期: {{ basic.Cycle }}天</h4>
                         <h4 style="display: inline;">CN编号: {{ basic.CN }}</h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <h4 style="display: inline;">ISSN: {{ basic.ISSN }}</h4>
+                        {% if user.is_staff %}
+                        <a href="{% url 'add' %}?id={{ basic.id }}">增订期刊</a>
+                        {% endif %}
                 </div>
                 <div class="col-md-2"></div>
         </div>
