@@ -113,10 +113,10 @@
                             <tr>
                                 <td><b><a href="/periodical/paper/{{ it.id }}/">{{ it.Title }}</a></b></td>
                                 <td>{{ it.Auther }}</td>
-                                <td>{{ it.KeyWords }}</td>
+                                <td><b>{{ it.KeyWords }}</b></td>
                                 <td><b><a href="/periodical/{{it.Belong.id}}">{{ it.Belong}}</a></b></td>
                                 <td>{{ it.Pages_Start }} ~ {{ it.Pages_End }}</td>
-                                <td>{{ it.Abstract|truncatewords:"10" }}</td>
+                                <td>{{ it.Abstract|slice:"30" }}...</td>
                             </tr>
                             {% endfor %}
                         </table>

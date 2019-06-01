@@ -15,7 +15,7 @@
                 <div class="col-md-2"></div>
                 <div class="col-md-3">
                     <a href="{% url 'periodical' basic.Name %}" class="thumbnail">
-                            <img style="height:200px;" src="{% static basic.Name|add:'.png' %}" class="img-responsive" onerror="javascript:this.src='{% static 'logo2.png' %}' ">
+                            <img style="height:200px;" src="{% static 'peri_images/'|add:basic.Name|add:'.png' %}" class="img-responsive" onerror="javascript:this.src='{% static 'logo2.png' %}' ">
                     </a>
                 </div>
                 <div class="col-md-5" style="margin-left: 37px;">

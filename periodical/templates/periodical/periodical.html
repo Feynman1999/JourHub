@@ -16,7 +16,7 @@
         <div class="col-md-2"></div>
         <div class="col-md-3">
             <a href="{% url 'periodical' periodical.Name %}" class="thumbnail">
-                    <img style="height:200px;" src="{% static periodical.Name|add:'.png' %}" class="img-responsive" onerror="javascript:this.src='{% static 'logo2.png' %}' ">
+                    <img style="height:200px;" src="{% static 'peri_images/'|add:periodical.Name|add:'.png' %}" class="img-responsive" onerror="javascript:this.src='{% static 'logo2.png' %}' ">
             </a>
         </div>
         <div class="col-md-5" style="margin-left: 37px;">
@@ -56,7 +56,7 @@
                         <tr>
                             <td><b><a href="/periodical/paper/{{ it.id }}">{{ it.Title }}</a></b></td>
                             <td>{{ it.Auther }}</td>
-                            <td>{{ it.KeyWords }}</td>
+                            <td><b>{{ it.KeyWords }}</b></td>
                             <td>{{ it.Pages_Start }} ~ {{ it.Pages_End }}</td>
                         </tr>
                     {% endfor %}
