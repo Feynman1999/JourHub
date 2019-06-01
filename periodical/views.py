@@ -160,18 +160,32 @@ def add(request):
                 Status=False,Order_Time=timezone.now(),Responsibler_id=request.user.id)
             
             return redirect('/periodical/addlist')
-            
         else:
             context = {}
             context['message'] = errors
             context['Name'] = Name
             context['Phase'] = Phase
             context['Postal'] = Postal
+            context['Cycle'] = Cycle
             context['CN'] = CN
             context['ISSN'] = ISSN
             context['Locus'] = Locus
             context['Total'] = Total
             return render(request,'periodical/add.html',context)
+    else:
+        now_id = request.GET.get('id')
+        if now_id != None:
+            periodical = models.Periodical.objects.get(id=now_id)
+            context = {}
+            context['Name'] = periodical.Name
+            context['Postal'] = periodical.Postal
+            context['Cycle'] = periodical.Cycle
+            context['CN'] = periodical.CN
+            context['ISSN'] = periodical.ISSN
+            context['Locus'] = periodical.Locus
+            return render(request,'periodical/add.html',context)
+        else:
+            return render(request,'periodical/add.html')
     return render(request,'periodical/add.html')
 
 # 征订列表
