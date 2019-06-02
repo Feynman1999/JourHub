@@ -26,7 +26,7 @@
             {% for it in periodicals %}
                 <div class="col-xs-2">
                     <a href="{% url 'periodical' it.Name %}" class="thumbnail">
-                        <img class="resize" src="{% static it.Name|add:'.png' %}" class="img-responsive" onerror="javascript:this.src='{% static 'logo2.png' %}' ">
+                        <img class="resize" src="{% static 'peri_images/'|add:it.Name|add:'.png' %}" class="img-responsive" onerror="javascript:this.src='{% static 'logo2.png' %}' ">
                     </a>
                     <div style="text-align: center"><a href="{% url 'periodical' it.Name %}"><b>{{ it.Name }}</b></a></div>
                 </div>
