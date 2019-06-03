@@ -235,8 +235,12 @@ def checkin(request,id):
                 errors.append('请输入第%d篇论文的关键词'%(i+1,))
             if Pages_Start == "":
                 errors.append('请输入第%d篇论文的开始页码'%(i+1,))
+            elif int(Pages_Start) <= 0 :
+                errors.append('第%d篇论文的开始页码不能为负数'%(i+1,))
             if Pages_End == "":
                 errors.append('请输入第%d篇论文的结束页码'%(i+1,))
+            elif int(Pages_End) < int(Pages_Start):
+                errors.append('第%d篇论文的结束页码应大于等于开始页码'%(i+1,))
             if Abstract.strip() == "":
                 errors.append('请输入第%d篇论文的摘要'%(i+1,))
 
