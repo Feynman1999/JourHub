@@ -76,6 +76,14 @@
         </div>
         <div class="col-md-3"></div>
 </div>
+<div>
+        {% if Periodicals %}
+        已经征订的该期刊：<br>
+        {% for it in Periodicals %}
+                名字:{{ it.Name }} 年份:{{ it.Year }} 卷:{{ it.Volume }} 期:{{ it.Phase }} <br>
+        {% endfor %}
+        {% endif %}
+</div>
     
 {% endblock  %}
 

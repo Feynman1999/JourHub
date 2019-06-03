@@ -173,16 +173,20 @@ def add(request):
             context['Total'] = Total
             return render(request,'periodical/add.html',context)
     else:
-        now_id = request.GET.get('id')
-        if now_id != None:
-            periodical = models.Periodical.objects.get(id=now_id)
+        Name = request.GET.get('name')
+        if Name != None:            
+            periodicals = models.Periodical.objects.filter(Name=Name).order_by('-id')[:6]
+            TmpList = list(periodicals)
+            if len(TmpList) == 0:
+                return redirect('/')
             context = {}
-            context['Name'] = periodical.Name
-            context['Postal'] = periodical.Postal
-            context['Cycle'] = periodical.Cycle
-            context['CN'] = periodical.CN
-            context['ISSN'] = periodical.ISSN
-            context['Locus'] = periodical.Locus
+            context['Name'] = TmpList[0].Name
+            context['Postal'] = TmpList[0].Postal
+            context['Cycle'] = TmpList[0].Cycle
+            context['CN'] = TmpList[0].CN
+            context['ISSN'] = TmpList[0].ISSN
+            context['Locus'] = TmpList[0].Locus
+            context['Periodicals'] = periodicals
             return render(request,'periodical/add.html',context)
         else:
             return render(request,'periodical/add.html')
