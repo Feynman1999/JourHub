@@ -76,14 +76,35 @@
         </div>
         <div class="col-md-3"></div>
 </div>
-<div>
-        {% if Periodicals %}
-        已经征订的该期刊：<br>
-        {% for it in Periodicals %}
-                名字:{{ it.Name }} 年份:{{ it.Year }} 卷:{{ it.Volume }} 期:{{ it.Phase }} <br>
-        {% endfor %}
-        {% endif %}
+
+{% if Periodicals %}
+<div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+                <div class="row" style="text-align: center">
+                        <h3>
+                        <img height="26px" src="{% static '3.png' %}" style="display: inline-block">
+                        <b>本站已订的{{ Name }}期刊</b>
+                        <img height="26px" src="{% static '3.png' %}" style="display: inline-block">
+                        </h3>
+                </div><br>
+                <table class="table table-hover">
+                        <tr class="success">
+                        <th>期刊名</th>
+                        <th>库存</th>
+                        <th>总量</th>
+                        </tr>
+                        {% for it in Periodicals %}
+                        <tr>
+                                <td><b><a href="/periodical/{{ it.id }}">{{ it.Name }} {{it.Year}}年 ( 第{{it.Phase}}期 )</a></b></td>
+                                <td>{{ it.Reserve }}</td>
+                                <td>{{ it.Total }}</td>
+                        </tr>
+                        {% endfor %}
+                </table>
+        </div>
+        <div class="col-xs-2"></div>
 </div>
-    
+{% endif %}
 {% endblock  %}
 
