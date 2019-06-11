@@ -14,6 +14,18 @@
 {% endblock %}
 
 {% block content %}
+{% if status %}
+    {% ifnotequal status 'error' %}
+        <div class="alert alert-success" role="alert" style="text-align: center">
+            <b>借阅成功 O(∩_∩)O~~</b>
+        </div>
+    {% else %}
+        <div class="alert alert-danger" role="alert"  style="text-align: center">
+            <b>借阅失败，可能是库存不足了::>_<::</b>
+        </div>
+    {% endifnotequal %}
+{% endif %}
+
 <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8">
