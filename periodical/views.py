@@ -301,11 +301,13 @@ def borrow(request,id,day):
     res = auth.models.User.objects.get(username=request.user)
     models.Borrow.objects.create(Person_id=res.id,Period_id=id,Borrow_Duration=day,Borrow_Time=timezone.now())
     tmpPeriod = models.Periodical.objects.get(id=id)
+    if tmpPeriod.Reserve == 0:
+        return redirect('/periodical/borrowlist/?status=error')
     tmpPeriod.Reserve -= 1
     tmpPeriod.Borrow_Count += 1
     tmpPeriod.save()
 
-    return redirect('/periodical/%s' %(id,))
+    return redirect('/periodical/borrowlist/?status=success')
 
 def borrowlist(request):
     if request.user.is_authenticated == False:
@@ -313,6 +315,9 @@ def borrowlist(request):
     res = auth.models.User.objects.get(username=request.user)
     is_staff = res.is_staff
     context = {}
+    tmp_status = request.GET.get('status')
+    if tmp_status:
+        context['status'] = tmp_status
     # 管理员查看全部信息
     if is_staff == True:
         message = "亲爱的管理员，欢迎来到本页面，您可以搜索所有用户的借阅信息"
